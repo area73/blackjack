@@ -1,8 +1,8 @@
 import * as Router from "@koa/router";
-const router = new Router({ prefix: "/new-game" });
+const router = new Router({ prefix: "/" });
 
 router.get("/", async (ctx, _next) => {
-  ctx.body = { msg: "New Game" };
+  ctx.body = { msg: "Default route" };
 });
 
 export default router;
