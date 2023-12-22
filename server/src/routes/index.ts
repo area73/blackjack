@@ -1,5 +1,6 @@
 import * as compose from "koa-compose";
 
+import dealerRouter from "./dealer";
 import defaultRouter from "./default";
 import gameRouter from "./game";
 import hitRouter from "./hit";
@@ -14,6 +15,8 @@ const appRouter = compose([
   standRouter.allowedMethods(),
   defaultRouter.routes(),
   defaultRouter.allowedMethods(),
+  dealerRouter.routes(),
+  dealerRouter.allowedMethods(),
 ]);
 
 export default appRouter;
