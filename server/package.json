@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev src/app.ts",
     "lint": "eslint --ignore-path .eslintignore --ext .ts",
-    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|json)\""
+    "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|json)\"",
+    "preinstall": "npx only-allow pnpm"
   },
   "keywords": [],
   "author": "Rodrigo Erades<rerades@siete3.com>",
