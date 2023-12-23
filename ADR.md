@@ -23,3 +23,16 @@ We can us it for testing purpose
 ## Server
 
 **Koa**: Koa is a new web framework designed by the team behind Express, which aims to be a smaller, more expressive, and more robust foundation for web applications and APIs.
+
+### State
+
+Since our server is stateless , we need to set a mechanism to let the server store information between API calls.
+
+In order to do so we are going to share a token between server and client to identify session. For the sake of simplicity we are going to share a random hash, in a more elaborated project we could use JWT as an example
+
+### Persistance layer
+
+Since we are keeping track of each game , we need to persist that information for future recovery.
+
+We can use a Database like MySQL or postgreSQL or even noSQL data bases like Mongo and we can persist the data on file or just in memory.
+In this case I'm choosing **lowDB** which they describe as Simple to use type-safe local JSON database

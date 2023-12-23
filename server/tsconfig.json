@@ -3,13 +3,18 @@
     "outDir": "./dist",
     "lib": ["ES5", "ES6"],
     "target": "ES2020",
-    "module": "CommonJS",
+    "module": "ESNext",
     "noImplicitAny": true,
     "moduleResolution": "Node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "strictNullChecks": true
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true
   },
-  "include": ["./src/**/*"],
-  "exclude": ["node_modules"]
+  "include": ["./env.d.ts","./src/**/*"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "esm": true
+  }
 }
