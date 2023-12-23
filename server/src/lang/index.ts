@@ -16,15 +16,17 @@
 export const literals = {
   en: {
     error: {
-      notAllowed: 'Not allowed',
+      notAllowed: "Not allowed",
+      dbInit: "Error loading database",
+      gameInit: "Game not found",
     },
     game: {
-      finished: 'Game finished',
-      userWin: 'You win',
-      userBust: 'You bust',
-      dealerWin: 'Dealer win',
-      dealerBust: 'Dealer bust',
-      draw: 'Draw',
-    }
-  }
-} as const
+      finished: "Game finished",
+      userWin: "You win",
+      userBust: "You bust",
+      dealerWin: "Dealer win",
+      dealerBust: "Dealer bust",
+      draw: "Draw",
+    },
+  },
+} as const;
