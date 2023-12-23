@@ -1,4 +1,4 @@
-import * as compose from "koa-compose";
+import compose from "koa-compose";
 
 import dealerRouter from "./dealer";
 import defaultRouter from "./default";

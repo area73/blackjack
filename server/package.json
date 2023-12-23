@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Black Jack server",
   "main": "src/app.ts",
+  "type": "module",
   "scripts": {
     "test": "vitest",
-    "dev": "ts-node-dev src/app.ts",
-    "lint": "eslint --ignore-path .eslintignore --ext .ts",
+    "dev": "tsx watch src/app.ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|json)\"",
+    "typecheck": "tsc --noEmit",
     "preinstall": "npx only-allow pnpm"
   },
   "keywords": [],
@@ -18,7 +19,8 @@
     "colors": "^1.4.0",
     "koa": "^2.14.2",
     "koa-combine-routers": "^4.0.2",
-    "koa-compose": "^4.1.0"
+    "koa-compose": "^4.1.0",
+    "lowdb": "^6.1.1"
   },
   "devDependencies": {
     "@types/color": "^3.0.6",
@@ -34,8 +36,9 @@
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.5.0",
     "eslint-plugin-promise": "^6.1.1",
+    "nodemon": "^3.0.2",
     "prettier": "^3.1.1",
-    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vitest": "^1.1.0"
   }

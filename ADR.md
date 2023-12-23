@@ -26,7 +26,7 @@ We can us it for testing purpose
 
 ### State
 
-Since our server is stateless , we need to set a mechanism to let tje server store information between API calls.
+Since our server is stateless , we need to set a mechanism to let the server store information between API calls.
 
 In order to do so we are going to share a token between server and client to identify session. For the sake of simplicity we are going to share a random hash, in a more elaborated project we could use JWT as an example
 
@@ -34,4 +34,5 @@ In order to do so we are going to share a token between server and client to ide
 
 Since we are keeping track of each game , we need to persist that information for future recovery.
 
-We can use a Database like MySQL or postgreSQL or even noSQL data bases like Mongo and we can persist the data on file or just in memory, but for this case since this is a POC I will go for a simpler approach and I will build a persistance layer by using a Singleton pattern that warranty that the persistent object used to store the data wil be instantiate only one time
+We can use a Database like MySQL or postgreSQL or even noSQL data bases like Mongo and we can persist the data on file or just in memory.
+In this case I'm choosing **lowDB** which they describe as Simple to use type-safe local JSON database

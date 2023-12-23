@@ -1,7 +1,7 @@
-import * as Router from "@koa/router";
+import Router from "@koa/router";
 const router = new Router({ prefix: "/hit" });
 
-router.get("/", async (ctx, _next) => {
+router.get("/", (ctx, _next) => {
   ctx.body = { msg: "HIT world" };
 });
 

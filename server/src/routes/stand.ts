@@ -1,4 +1,4 @@
-import * as Router from "@koa/router";
+import Router from "@koa/router";
 const router = new Router({ prefix: "/stand" });
 
 router.get("/", async (ctx, _next) => {
