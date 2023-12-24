@@ -3,10 +3,15 @@ import { JSONPreset } from "lowdb/node";
 import { literals } from "../lang";
 
 import { join } from "path";
-
+/**
+ * @typedef {Object} CardPlay
+ * @property {string[]} cards the picked cards
+ * @property {number[]} score the score of the picked cards, can be more than one if Ace are on the hand
+ * @property {boolean} finished if the user has finished the game
+ */
 export type CardPlay = {
   cards: string[];
-  punctuation: number;
+  score: number[];
   finished: boolean;
 };
 

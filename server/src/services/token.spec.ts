@@ -1,4 +1,3 @@
-// sum.test.js
 import { describe, expect, it } from "vitest";
 import { generateToken } from "./token";
 
