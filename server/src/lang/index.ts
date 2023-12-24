@@ -18,7 +18,9 @@ export const literals = {
     error: {
       notAllowed: "Not allowed",
       dbInit: "Error loading database",
-      gameInit: "Game not found",
+      gameInit: "Error initializing game",
+      gameNotFound: "Game not found",
+      noMoreCards: "No more cards",
     },
     game: {
       finished: "Game finished",
