@@ -1,32 +1,54 @@
 import { type Game } from "../db";
+import { literals } from "../lang";
 
-type UserTurn = "user" | "dealer";
+export type Player = "user" | "dealer";
+
+const DEALER_MIN_SCORE = 17;
 
 export const scoreEngine = (gameParam: Game) => {
   const game = gameParam;
   /**
-   * Checking if the next user is the player or the dealer
+   * Checking if the current user is the player or the dealer
    */
-  const userTurn: UserTurn = game.user.finished ? "dealer" : "user";
+  const actualPlayer = (): Player =>
+    game.user.finished || checkIfBusted("user") ? "dealer" : "user";
+
+  const checkIfBusted = (player: Player): boolean => {
+    const playerScore = game[player].score;
+    return playerScore.every((score) => score > 21);
+  };
+
+  const notAllowedToHit = (): boolean =>
+    actualPlayer() !== "user" &&
+    game.dealer.score.every((score) => score >= DEALER_MIN_SCORE);
 
   /**
    * Adding a new card to the player or the dealer, based on the game state
    */
-  /*
-  const nextCard = () => {
-    const card = game.deck.pop();
-    if (card == null) {
-      throw new Error(literals.en.error.noMoreCards);
+  const hit = (): string => {
+    if (notAllowedToHit()) {
+      throw new Error(literals.en.error.notAllowed);
+    } else {
+      const card = game.deck.shift();
+      if (card == null) {
+        throw new Error(literals.en.error.noMoreCards);
+      }
+      game[actualPlayer()].cards.push(card);
+      return card;
     }
-    game[userTurn].cards.push(card);
-    game[userTurn].finished = checkBust();
-    game[userTurn].score = calculateScore(userTurn);
   };
 
-  const hit = () => {};
+  const isDealerNotAllowToStand = (): boolean => !notAllowedToHit();
 
-  const stand = () => {};
-*/
+  const stand = (): boolean => {
+    if (actualPlayer() === "dealer" && isDealerNotAllowToStand()) {
+      throw new Error(literals.en.error.notAllowedToStand);
+    } else {
+      game[actualPlayer()].finished = true;
+      return true;
+    }
+  };
+
   const getCardScore = (cardParam: string): number => {
     const card = cardParam.substring(2);
     if (card === "A") {
@@ -38,9 +60,8 @@ export const scoreEngine = (gameParam: Game) => {
     return Number(card);
   };
 
-  const calculateScore = (userTurn: UserTurn): number[] => {
-    // const score = game[userTurn].score;
-    const cards = game[userTurn].cards;
+  const calculateScore = (player: Player): number[] => {
+    const cards = game[player].cards;
     const hasAce = cards.some((card) => card.substring(2) === "A");
     const score = cards.reduce((acc, card) => {
       const cardScore = getCardScore(card);
@@ -54,9 +75,8 @@ export const scoreEngine = (gameParam: Game) => {
   const isValidScore = (score: number): boolean => score <= 21;
 
   return {
-    // b hit,
-    // stand,
-    // checkWinner,
+    stand,
     calculateScore,
+    hit,
   };
 };

@@ -21,6 +21,7 @@ export const literals = {
       gameInit: "Error initializing game",
       gameNotFound: "Game not found",
       noMoreCards: "No more cards",
+      notAllowedToStand: "Dealer is not allowed to stand",
     },
     game: {
       finished: "Game finished",
