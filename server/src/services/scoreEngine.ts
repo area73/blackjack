@@ -5,7 +5,13 @@ export type Player = "user" | "dealer";
 
 const DEALER_MIN_SCORE = 17;
 
-export const scoreEngine = (gameParam: Game) => {
+export type ScoreEngine = {
+  stand: () => boolean;
+  calculateScore: (player: Player) => number[];
+  hit: () => string;
+};
+
+export const scoreEngine = (gameParam: Game): ScoreEngine => {
   const game = gameParam;
   /**
    * Checking if the current user is the player or the dealer
