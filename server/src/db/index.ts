@@ -1,9 +1,17 @@
 import { type Low } from "lowdb";
 import { JSONPreset } from "lowdb/node";
+import { literals } from "../lang";
 
+import { join } from "path";
+/**
+ * @typedef {Object} CardPlay
+ * @property {string[]} cards the picked cards
+ * @property {number[]} score the score of the picked cards, can be more than one if Ace are on the hand
+ * @property {boolean} finished if the user has finished the game
+ */
 export type CardPlay = {
   cards: string[];
-  punctuation: number;
+  score: number[];
   finished: boolean;
 };
 
@@ -20,16 +28,13 @@ export type Schema = {
 
 const defaultSchema: Schema = { games: [] };
 
-const db = await JSONPreset<Schema>("game.json", defaultSchema);
-/*
-export const createConnection = async (): Promise<Low<Schema>> => {
-  try {
-    db = await JSONPreset<Schema>("game.json", defaultSchema);
-  } catch (e) {
-    // TODO: handle error
-    console.error(e);
-  }
-  return db;
-};
-*/
+let db: Low<Schema>;
+try {
+  db = await JSONPreset<Schema>(join("src", "db", "game.json"), defaultSchema);
+  await db.write();
+} catch (error) {
+  console.error(error);
+  throw new Error(literals.en.error.dbInit);
+}
+
 export const getConnection = async (): Promise<Low<Schema>> => db;
