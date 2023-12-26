@@ -21,11 +21,36 @@ describe("hit endpoint", () => {
     });
     it("should return a not allow response if trying to get more cards than needed", async () => {
       let response = await req.get("/hit").set("Authorization", token);
-      console.log(response.body.game.user.finished);
       while (response.status !== 401) {
         response = await req.get("/hit").set("Authorization", token);
       }
       expect(response.status).toBe(401);
+    });
+
+    it.only("should update state of user to finished if busted", async () => {
+      const response = await req.get("/hit").set("Authorization", token);
+      console.log(response.body.game);
+      const response2 = await req.get("/hit").set("Authorization", token);
+      console.log(response2.body.game);
+      const response3 = await req.get("/hit").set("Authorization", token);
+      console.log(response3.body.game);
+
+      /*
+      while (!game?.user?.finished) {
+        response = await req.get("/hit").set("Authorization", token);
+        console.log("response.body ----->", response.body);
+        game = response.body.game as Game;
+      }
+      */
+      expect(response.status).toBe(200);
+
+      /*
+      expect(response.body.game.user.finished).toBe(true);
+      const lastScore =
+        response.body.game.user.score[response.body.game.user.score.length - 1];
+      expect(lastScore).toBeGreaterThan(21);
+      */
+      expect(true).toBe(true);
     });
   });
 

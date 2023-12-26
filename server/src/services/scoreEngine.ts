@@ -9,7 +9,7 @@ export type ScoreEngine = {
   game: Game;
   stand: () => boolean;
   calculateScore: (player: Player) => number[];
-  hit: () => string;
+  hit: () => string | null;
   initGame: () => Game;
   playState: () => PlayState;
 };
@@ -29,6 +29,12 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
 
   const checkIfBusted = (player: Player): boolean => {
     const playerScore = game[player].score;
+    console.log(
+      "------>",
+      playerScore,
+      player,
+      playerScore.every((score) => score > 21)
+    );
     return playerScore.every((score) => score > 21);
   };
 
@@ -51,21 +57,25 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
   /**
    * Adding a new card to the player or the dealer, based on the game state
    */
-  const hit = (): string => {
+  const hit = (): string | null => {
     if (notAllowedToHit()) {
       throw new Error(literals.en.error.notAllowed);
     } else {
-      // get card from deck
-      const card = getCardFromDeck();
-      // add it to player
-      addCardToPlayer(card);
-      // calculate score for player
-      game[actualPlayer()].score = calculateScore(actualPlayer());
-      // set player as finished if busted
-      if (checkIfBusted(actualPlayer())) {
-        game[actualPlayer()].finished = true;
+      if (!game[actualPlayer()].finished) {
+        const player = actualPlayer();
+        // get card from deck
+        const card = getCardFromDeck();
+        // add it to player
+        addCardToPlayer(card, player);
+        // calculate score for player
+        game[player].score = calculateScore(player);
+        // set player as finished if busted
+        if (checkIfBusted(player)) {
+          game[player].finished = true;
+        }
+        return card;
       }
-      return card;
+      return null;
     }
   };
 
@@ -100,7 +110,8 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     }, 0);
 
     const combinedScore = hasAce ? [score, score + 10] : [score];
-    return combinedScore.filter(isValidScore);
+    // return combinedScore.filter(isValidScore);
+    return combinedScore;
   };
 
   const isValidScore = (score: number): boolean => score <= 21;

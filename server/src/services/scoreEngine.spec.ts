@@ -103,7 +103,7 @@ describe("scoreEngine", () => {
       const currentEngine = scoreEngine(game);
       const score = currentEngine.calculateScore("user");
 
-      expect(score).toStrictEqual([14]);
+      expect(score).toStrictEqual([14, 24]);
     });
   });
   describe("hit", () => {
@@ -167,10 +167,32 @@ describe("scoreEngine", () => {
       expect(game.deck).toStrictEqual(["S-5", "H-10"]);
       expect(game.user.cards).toStrictEqual(["S-3", "S-2"]);
     });
-    it("should not add a new card if the user is busted", () => {
+    it("Should finish user if busted after hit", () => {
       const game: Game = {
         id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
+        deck: ["S-9", "S-5", "H-10"],
+        user: {
+          cards: ["S-7", "S-4", "S-5"],
+          score: [16],
+          finished: false,
+        },
+        dealer: {
+          cards: ["S-7"],
+          score: [7],
+          finished: false,
+        },
+      };
+
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      console.log(game);
+      expect(game.user.finished).toBe(true);
+    });
+
+    it("should not add a new card to user if the user is busted", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["S-1", "S-7", "H-7"],
         user: {
           cards: ["S-3", "S-4", "S-5"],
           score: [22, 27],
@@ -184,10 +206,10 @@ describe("scoreEngine", () => {
       };
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
+      expect(game.deck).toStrictEqual(["S-7", "H-7"]);
       expect(game.user.cards).toStrictEqual(["S-3", "S-4", "S-5"]);
     });
-    it("should not add a new card if the user has already finished", () => {
+    it("should not add a new card to user if the user has already finished", () => {
       const game: Game = {
         id: "abc",
         deck: ["S-2", "S-5", "H-10"],
@@ -347,6 +369,7 @@ describe("scoreEngine", () => {
       const state = currentEngine.playState();
       expect(state.code).toBe(4000);
     });
+
     it("should return a 3000 if there is a tie", () => {
       const game: Game = {
         id: "abc",
