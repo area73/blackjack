@@ -11,6 +11,12 @@ export type ScoreEngine = {
   calculateScore: (player: Player) => number[];
   hit: () => string;
   initGame: () => Game;
+  playState: () => PlayState;
+};
+
+export type PlayState = {
+  code: number;
+  message: string;
 };
 
 export const scoreEngine = (gameParam: Game): ScoreEngine => {
@@ -55,6 +61,10 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
       addCardToPlayer(card);
       // calculate score for player
       game[actualPlayer()].score = calculateScore(actualPlayer());
+      // set player as finished if busted
+      if (checkIfBusted(actualPlayer())) {
+        game[actualPlayer()].finished = true;
+      }
       return card;
     }
   };
@@ -109,7 +119,49 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     return game;
   };
 
+  const playState = (): PlayState => {
+    // if user busted, dealer win
+    if (checkIfBusted("user")) {
+      return {
+        code: 4000,
+        message: literals.en.game.dealerWin,
+      };
+    }
+    // if dealer busted, user win
+    if (checkIfBusted("dealer")) {
+      return {
+        code: 2000,
+        message: literals.en.game.dealerWin,
+      };
+    }
+    const { user, dealer } = game;
+    const { finished: userFinished, score: userScore } = user;
+    const { finished: dealerFinished, score: dealerScore } = dealer;
+
+    // if user stand, dealer play
+    if (userFinished && dealerFinished) {
+      if (
+        userScore[userScore.length - 1] === dealerScore[dealerScore.length - 1]
+      ) {
+        return {
+          code: 3000,
+          message: literals.en.game.draw,
+        };
+      }
+
+      return userScore > dealerScore
+        ? { code: 2000, message: literals.en.game.userWin }
+        : { code: 4000, message: literals.en.game.dealerWin };
+    }
+    // any other state is an active game
+    return {
+      code: 1000,
+      message: literals.en.game.ongoing,
+    };
+  };
+
   return {
+    playState,
     game,
     stand,
     calculateScore,

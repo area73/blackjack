@@ -308,4 +308,63 @@ describe("scoreEngine", () => {
       }).toThrowError(literals.en.error.notAllowedToStand);
     });
   });
+  describe("get state of the play", () => {
+    it("should return a 2000 code if the user wins", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-2", "A-3", "S-9", "A-5"],
+          score: [20],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(2000);
+    });
+    it("should return a 4000 code if the dealer wins", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-3", "S-9", "A-5"],
+          score: [18],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(4000);
+    });
+    it("should return a 3000 if there is a tie", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-1", "S-8"],
+          score: [9, 19],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(3000);
+    });
+  });
 });

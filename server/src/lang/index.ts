@@ -30,6 +30,7 @@ export const literals = {
       dealerWin: "Dealer win",
       dealerBust: "Dealer bust",
       draw: "Draw",
+      ongoing: "Game ongoing",
     },
   },
 } as const;
