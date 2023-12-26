@@ -5,8 +5,9 @@ import { createGame, getGame } from "./game";
 describe(" game", () => {
   describe("createGame", () => {
     /**
-     * Since we are using a in-memory database, we decide not to mock the getConnection function
-     * since the is on side effect of the function and we want to test the whole flow
+     * Since we are using an in-memory database, we decide not to mock the getConnection function.
+     * Because we are not accessing an external system our database has no side effect
+     * and that way we can test the whole flow
      */
     it("should create a new game", async () => {
       const game = await createGame({

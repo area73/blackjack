@@ -5,7 +5,7 @@ import { literals } from "../lang";
 import { join } from "path";
 /**
  * @typedef {Object} CardPlay
- * @property {string[]} cards the picked cards
+ * @property {string[]} cards list of cards used for the hand
  * @property {number[]} score the score of the picked cards, can be more than one if Ace are on the hand
  * @property {boolean} finished if the user has finished the game
  */
@@ -15,6 +15,13 @@ export type CardPlay = {
   finished: boolean;
 };
 
+/**
+ * @typedef {Object} Game
+ * @property {string} id the id of the game (Token)
+ * @property {string[]} deck the deck used for the game
+ * @property {CardPlay} user the user play
+ * @property {CardPlay} dealer the dealer play
+ */
 export type Game = {
   id: string;
   deck: string[];

@@ -103,7 +103,7 @@ describe("scoreEngine", () => {
       const currentEngine = scoreEngine(game);
       const score = currentEngine.calculateScore("user");
 
-      expect(score).toStrictEqual([14]);
+      expect(score).toStrictEqual([14, 24]);
     });
   });
   describe("hit", () => {
@@ -167,10 +167,31 @@ describe("scoreEngine", () => {
       expect(game.deck).toStrictEqual(["S-5", "H-10"]);
       expect(game.user.cards).toStrictEqual(["S-3", "S-2"]);
     });
-    it("should not add a new card if the user is busted", () => {
+    it("Should finish user if busted after hit", () => {
       const game: Game = {
         id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
+        deck: ["S-9", "S-5", "H-10"],
+        user: {
+          cards: ["S-7", "S-4", "S-5"],
+          score: [16],
+          finished: false,
+        },
+        dealer: {
+          cards: ["S-7"],
+          score: [7],
+          finished: false,
+        },
+      };
+
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      expect(game.user.finished).toBe(true);
+    });
+
+    it("should not add a new card to user if the user is busted", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["S-1", "S-7", "H-7"],
         user: {
           cards: ["S-3", "S-4", "S-5"],
           score: [22, 27],
@@ -184,10 +205,10 @@ describe("scoreEngine", () => {
       };
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
+      expect(game.deck).toStrictEqual(["S-7", "H-7"]);
       expect(game.user.cards).toStrictEqual(["S-3", "S-4", "S-5"]);
     });
-    it("should not add a new card if the user has already finished", () => {
+    it("should not add a new card to user if the user has already finished", () => {
       const game: Game = {
         id: "abc",
         deck: ["S-2", "S-5", "H-10"],
@@ -306,6 +327,66 @@ describe("scoreEngine", () => {
       expect(() => {
         currentEngine.stand();
       }).toThrowError(literals.en.error.notAllowedToStand);
+    });
+  });
+  describe("get state of the play", () => {
+    it("should return a 2000 code if the user wins", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-2", "A-3", "S-9", "A-5"],
+          score: [20],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(2000);
+    });
+    it("should return a 4000 code if the dealer wins", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-3", "S-9", "A-5"],
+          score: [18],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(4000);
+    });
+
+    it("should return a 3000 if there is a tie", () => {
+      const game: Game = {
+        id: "abc",
+        deck: ["A-2", "A-5", "A-10"],
+        user: {
+          cards: ["A-1", "S-8"],
+          score: [9, 19],
+          finished: true,
+        },
+        dealer: {
+          cards: ["H-8", "S-8", "A-3"],
+          score: [19],
+          finished: true,
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const state = currentEngine.playState();
+      expect(state.code).toBe(3000);
     });
   });
 });

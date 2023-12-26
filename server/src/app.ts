@@ -3,11 +3,18 @@ import Koa from "koa";
 import appRouter from "./routes";
 
 const port = 3000;
-
 const app = new Koa();
 
 app.use(appRouter);
 
-app.listen(port);
+app.on("error", (err, _ctx) => {
+  console.log(`${err}`.white.bgRed);
+});
 
-console.log(`server started on http://localhost:${port}`.green.bgBlack);
+if (process.env.NODE_ENV !== "test") {
+  app.listen(port, () => {
+    console.log(`server started on http://localhost:${port}`.green.bgBlack);
+  });
+}
+
+export { app };

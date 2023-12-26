@@ -6,7 +6,7 @@
   "type": "module",
   "packageManager": "pnpm@8.12.0",
   "scripts": {
-    "test": "vitest",
+    "test": "NODE_ENV=test vitest",
     "dev": "tsx watch src/app.ts",
     "format": "prettier --ignore-path .gitignore --write \"**/*.+(ts|json)\"",
     "typecheck": "tsc --noEmit",
@@ -27,9 +27,10 @@
   "devDependencies": {
     "@types/color": "^3.0.6",
     "@types/koa": "^2.13.12",
-    "@types/koa__router": "^12.0.4",
     "@types/koa-compose": "^3.2.8",
+    "@types/koa__router": "^12.0.4",
     "@types/node": "^20.10.5",
+    "@types/supertest": "^6.0.1",
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
@@ -40,6 +41,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^3.0.2",
     "prettier": "^3.1.1",
+    "supertest": "^6.3.3",
     "tsx": "^4.7.0",
     "typescript": "^5.3.3",
     "vitest": "^1.1.0"
