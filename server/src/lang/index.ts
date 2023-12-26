@@ -12,7 +12,6 @@
  * centrallice all the literals in one place in order to make it easy to add new languages
  *
  */
-
 export const literals = {
   en: {
     error: {
@@ -31,6 +30,7 @@ export const literals = {
       dealerBust: "Dealer bust",
       draw: "Draw",
       ongoing: "Game ongoing",
+      newGame: "New Game started",
     },
   },
 } as const;

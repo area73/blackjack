@@ -5,14 +5,18 @@ export type CreateGameParams = {
   token: string;
   deck: string[];
 };
-
+/**
+ *
+ * @param {CreateGameParams}
+ * @returns {Promise<Game>}
+ * Giving a token with a deck of cards, this function will create a new game
+ */
 export const createGame = async ({
   token,
   deck,
 }: CreateGameParams): Promise<Game> => {
   const db = await getConnection();
   const { games } = db.data;
-  // we need to give one card to the dealer and one to the user
   games.push({
     id: token,
     deck,

@@ -1,6 +1,7 @@
 import "colors";
 import { type Middleware } from "koa";
 import { DECK } from "../config";
+import { literals } from "../lang";
 import { shuffleDeck } from "../services/deck";
 import { createGame } from "../services/game";
 import { scoreEngine } from "../services/scoreEngine";
@@ -16,6 +17,7 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   const game = await createGame({ token, deck });
   const engine = scoreEngine(game);
   const play = engine.initGame();
+  // For security we will remove the deck from the response
   const initialPlay = { ...play, deck: undefined };
-  ctx.body = { message: "New Game started", game: initialPlay, token };
+  ctx.body = { message: literals.en.game.newGame, game: initialPlay, token };
 };

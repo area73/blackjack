@@ -21,9 +21,7 @@ export type PlayState = {
 
 export const scoreEngine = (gameParam: Game): ScoreEngine => {
   const game = gameParam;
-  /**
-   * Checking if the current user is the player or the dealer
-   */
+  // Checking if the current user is the player or the dealer
   const actualPlayer = (): Player =>
     game.user.finished || checkIfBusted("user") ? "dealer" : "user";
 
@@ -50,6 +48,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
   };
   /**
    * Adding a new card to the player or the dealer, based on the game state
+   * @returns {string | null} the new card
    */
   const hit = (): string | null => {
     if (notAllowedToHit()) {
@@ -64,9 +63,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
         // calculate score for player
         game[player].score = calculateScore(player);
         // set player as finished if busted
-        if (checkIfBusted(player)) {
-          game[player].finished = true;
-        }
+        checkIfBusted(player) && (game[player].finished = true);
         return card;
       }
       return null;
@@ -75,6 +72,11 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
 
   const isDealerNotAllowToStand = (): boolean => !notAllowedToHit();
 
+  /**
+   * If the player is the dealer, he can stand only if he has a score greater than 17
+   * If the player is the user, he can stand only if he has not busted
+   * @returns {boolean} true if the player can stand, false otherwise
+   */
   const stand = (): boolean => {
     if (actualPlayer() === "dealer" && isDealerNotAllowToStand()) {
       throw new Error(literals.en.error.notAllowedToStand);
@@ -83,6 +85,12 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
       return true;
     }
   };
+
+  /**
+   * Giving a card, this function will return the score of the card
+   * @param {string} cardParam
+   * @returns {number} the score of the card
+   */
 
   const getCardScore = (cardParam: string): number => {
     const card = cardParam.substring(2);
@@ -102,13 +110,9 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
       const cardScore = getCardScore(card);
       return acc + cardScore;
     }, 0);
-
     const combinedScore = hasAce ? [score, score + 10] : [score];
-    // return combinedScore.filter(isValidScore);
     return combinedScore;
   };
-
-  // const isValidScore = (score: number): boolean => score <= 21;
 
   /**
    * When a game is initialize we need to give 2 cards to each dealer and  player
@@ -124,6 +128,10 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     return game;
   };
 
+  /**
+   * This function will return the state of the game
+   * @returns {PlayState} the state of the game
+   */
   const playState = (): PlayState => {
     // if user busted, dealer win
     if (checkIfBusted("user")) {
@@ -145,18 +153,24 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
 
     // if user stand, dealer play
     if (userFinished && dealerFinished) {
-      if (
-        userScore[userScore.length - 1] === dealerScore[dealerScore.length - 1]
-      ) {
+      const lastUserScore = userScore[userScore.length - 1];
+      const lastDealerScore = dealerScore[dealerScore.length - 1];
+
+      if (lastUserScore === lastDealerScore) {
         return {
           code: 3000,
           message: literals.en.game.draw,
         };
       }
 
-      return userScore > dealerScore
-        ? { code: 2000, message: literals.en.game.userWin }
-        : { code: 4000, message: literals.en.game.dealerWin };
+      const userWins = lastUserScore > lastDealerScore;
+
+      return {
+        code: userWins ? 2000 : 4000,
+        message: userWins
+          ? literals.en.game.userWin
+          : literals.en.game.dealerWin,
+      };
     }
     // any other state is an active game
     return {
