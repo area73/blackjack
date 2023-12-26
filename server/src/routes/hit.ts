@@ -1,8 +1,7 @@
 import Router from "@koa/router";
+import { hit } from "../controllers/hit";
 const router = new Router({ prefix: "/hit" });
 
-router.get("/", (ctx, _next) => {
-  ctx.body = { msg: "HIT world" };
-});
+router.get("/", hit);
 
 export default router;

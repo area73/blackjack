@@ -8,6 +8,12 @@ const app = new Koa();
 
 app.use(appRouter);
 
+app.on("error", (err, _ctx) => {
+  console.log(`${err}`.white.bgRed);
+});
+
 app.listen(port);
 
 console.log(`server started on http://localhost:${port}`.green.bgBlack);
+
+export { app };

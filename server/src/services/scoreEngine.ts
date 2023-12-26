@@ -6,9 +6,11 @@ export type Player = "user" | "dealer";
 const DEALER_MIN_SCORE = 17;
 
 export type ScoreEngine = {
+  game: Game;
   stand: () => boolean;
   calculateScore: (player: Player) => number[];
   hit: () => string;
+  initGame: () => Game;
 };
 
 export const scoreEngine = (gameParam: Game): ScoreEngine => {
@@ -28,6 +30,18 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     actualPlayer() !== "user" &&
     game.dealer.score.every((score) => score >= DEALER_MIN_SCORE);
 
+  const getCardFromDeck = (): string => {
+    const card = game.deck.shift();
+    if (card == null) {
+      throw new Error(literals.en.error.noMoreCards);
+    }
+    return card;
+  };
+
+  const addCardToPlayer = (card: string, player?: Player): void => {
+    const selectedPlayer = player ?? actualPlayer();
+    game[selectedPlayer].cards.push(card);
+  };
   /**
    * Adding a new card to the player or the dealer, based on the game state
    */
@@ -35,11 +49,12 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     if (notAllowedToHit()) {
       throw new Error(literals.en.error.notAllowed);
     } else {
-      const card = game.deck.shift();
-      if (card == null) {
-        throw new Error(literals.en.error.noMoreCards);
-      }
-      game[actualPlayer()].cards.push(card);
+      // get card from deck
+      const card = getCardFromDeck();
+      // add it to player
+      addCardToPlayer(card);
+      // calculate score for player
+      game[actualPlayer()].score = calculateScore(actualPlayer());
       return card;
     }
   };
@@ -80,9 +95,25 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
 
   const isValidScore = (score: number): boolean => score <= 21;
 
+  /**
+   * When a game is initialize we need to give 2 cards to each dealer and  player
+   */
+  const initGame = (): Game => {
+    addCardToPlayer(getCardFromDeck(), "user"); // hand one card to user
+    addCardToPlayer(getCardFromDeck(), "user"); // hand one card to user
+    addCardToPlayer(getCardFromDeck(), "dealer"); // hand one card to dealer
+    addCardToPlayer(getCardFromDeck(), "dealer"); // hand one card to dealer
+    // calculate score for each player
+    game.user.score = calculateScore("user");
+    game.dealer.score = calculateScore("dealer");
+    return game;
+  };
+
   return {
+    game,
     stand,
     calculateScore,
     hit,
+    initGame,
   };
 };

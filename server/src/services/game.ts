@@ -12,7 +12,7 @@ export const createGame = async ({
 }: CreateGameParams): Promise<Game> => {
   const db = await getConnection();
   const { games } = db.data;
-
+  // we need to give one card to the dealer and one to the user
   games.push({
     id: token,
     deck,
@@ -21,11 +21,11 @@ export const createGame = async ({
   });
   // if we want to persist data in file system we need to save it or else will be persisted only in memory
   // await db.write();
-  const post = games.find((game) => game.id === token);
-  if (post == null) {
+  const game = games.find((game) => game.id === token);
+  if (game == null) {
     throw new Error(literals.en.error.gameInit);
   }
-  return post;
+  return game;
 };
 
 export const getGame = async (token: string): Promise<Game> => {

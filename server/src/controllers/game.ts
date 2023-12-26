@@ -3,6 +3,7 @@ import { type Middleware } from "koa";
 import { DECK } from "../config";
 import { shuffleDeck } from "../services/deck";
 import { createGame } from "../services/game";
+import { scoreEngine } from "../services/scoreEngine";
 import { generateToken } from "../services/token";
 
 export const getNewGame: Middleware = async (ctx, _next) => {
@@ -13,6 +14,8 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   const deck = shuffleDeck(DECK);
   // generate a new game
   const game = await createGame({ token, deck });
-  console.log(`${JSON.stringify(game)}`.green.bgBlack);
-  ctx.body = { message: "New Game started" };
+  const engine = scoreEngine(game);
+  const play = engine.initGame();
+  const initialPlay = { ...play, deck: undefined };
+  ctx.body = { message: "New Game started", game: initialPlay, token };
 };
