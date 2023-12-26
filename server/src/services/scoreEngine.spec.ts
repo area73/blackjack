@@ -185,7 +185,6 @@ describe("scoreEngine", () => {
 
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      console.log(game);
       expect(game.user.finished).toBe(true);
     });
 

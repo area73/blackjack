@@ -1,11 +1,12 @@
-import request from "supertest";
+import supertest from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 import { app } from "../../app";
 import { type Game } from "../../db";
 import { literals } from "../../lang";
 
 describe("hit endpoint", () => {
-  const req = request(app.listen(4000));
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const req = supertest(app.callback());
 
   describe("On valid token", () => {
     let token: string;
@@ -27,30 +28,18 @@ describe("hit endpoint", () => {
       expect(response.status).toBe(401);
     });
 
-    it.only("should update state of user to finished if busted", async () => {
-      const response = await req.get("/hit").set("Authorization", token);
-      console.log(response.body.game);
-      const response2 = await req.get("/hit").set("Authorization", token);
-      console.log(response2.body.game);
-      const response3 = await req.get("/hit").set("Authorization", token);
-      console.log(response3.body.game);
+    it("should update state of user to finished if busted", async () => {
+      let response = await req.get("/hit").set("Authorization", token);
 
-      /*
-      while (!game?.user?.finished) {
+      while (!(response.body.game.user.finished as boolean)) {
         response = await req.get("/hit").set("Authorization", token);
-        console.log("response.body ----->", response.body);
-        game = response.body.game as Game;
       }
-      */
-      expect(response.status).toBe(200);
 
-      /*
+      expect(response.status).toBe(200);
       expect(response.body.game.user.finished).toBe(true);
       const lastScore =
         response.body.game.user.score[response.body.game.user.score.length - 1];
       expect(lastScore).toBeGreaterThan(21);
-      */
-      expect(true).toBe(true);
     });
   });
 

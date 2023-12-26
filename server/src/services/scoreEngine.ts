@@ -29,12 +29,6 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
 
   const checkIfBusted = (player: Player): boolean => {
     const playerScore = game[player].score;
-    console.log(
-      "------>",
-      playerScore,
-      player,
-      playerScore.every((score) => score > 21)
-    );
     return playerScore.every((score) => score > 21);
   };
 
@@ -114,7 +108,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     return combinedScore;
   };
 
-  const isValidScore = (score: number): boolean => score <= 21;
+  // const isValidScore = (score: number): boolean => score <= 21;
 
   /**
    * When a game is initialize we need to give 2 cards to each dealer and  player

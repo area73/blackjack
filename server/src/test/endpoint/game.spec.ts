@@ -1,9 +1,10 @@
-import request from "supertest";
+import supertest from "supertest";
 import { describe, expect, it } from "vitest";
 import { app } from "../../app";
 
 describe("new-game endpoint", () => {
-  const req = request(app.listen(4000));
+  // eslint-disable-next-line @typescript-eslint/no-misused-promises
+  const req = supertest(app.callback());
   it("should return a ok response", async () => {
     await req.get("/new-game").expect(200);
   });
