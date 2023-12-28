@@ -11,18 +11,19 @@ const { error, data, isFetching, execute } = useBlackJackFetch(API_URL.newGame, 
 }).json<ResponseBody>()
 
 watch(error, (errorState?: CustomError) => {
-
+  console.log('errorState: ', errorState);
 })
 
 
 watch(data, (dataState) => {
+  console.log('data: ', data, dataState);
   if (dataState) {
-    console.log(dataState);
+    console.log('dataState =>', dataState);
   }
 })
 
 watch(isFetching, (fetchState) => {
-  console.log(fetchState);
+  console.log('isFetching: ', fetchState);
 })
 
 const onNewGame = () => {
