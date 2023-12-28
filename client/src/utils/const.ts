@@ -11,9 +11,9 @@ export const API_URL = {
 
 export const ERROR_MESSAGES = {
   1: literals.en.error.unknownError,
- 401: literals.en.error.unauthorized,
- 403: literals.en.error.forbidden,
- 404: literals.en.error.notFound,
- 500: literals.en.error.internalServerError,
+  401: literals.en.error.unauthorized,
+  403: literals.en.error.forbidden,
+  404: literals.en.error.notFound,
+  500: literals.en.error.internalServerError,
 } as const;
 

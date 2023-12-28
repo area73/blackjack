@@ -33,7 +33,6 @@ const onFetchError = ({
   data,
   response
 }: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
-  console.log(data)
   const statusCode = response?.status
     ? response.status as keyof typeof ERROR_MESSAGES
     : 1;
