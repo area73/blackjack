@@ -1,12 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <link rel="icon" href="/favicon.ico">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vite App</title>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Black Jack</title>
+    <style>
+      .blackjack {
+        background-repeat: no-repeat, repeat, no-repeat;
+        background-position: center;
+        background-image: url('/images/black-jack-10.png'),
+          url('/images/45-degree-fabric-light.png'),
+          radial-gradient(
+            circle,
+            rgba(27, 134, 71, 1) 0%,
+            rgba(8, 92, 34, 1) 54%,
+            rgba(5, 60, 31, 1) 100%
+          );
+        background-color: rgb(27, 134, 71);
+      }
+    </style>
   </head>
-  <body>
+  <body class="blackjack">
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
