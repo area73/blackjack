@@ -11,7 +11,7 @@ defineProps<{ cards: string[], score: number[], owner: string }>()
         <BJCard :value="card" />
       </li>
     </ul>
-    <span class="bj-hand__score">{{ owner }} Score: {{ score.join(' / ') }}</span>
+    <div class="bj-hand__score">{{ owner }} Score: <span class="bj-hand__number">{{ score.join(' / ') }}</span></div>
   </div>
 </template>
 
@@ -20,6 +20,11 @@ defineProps<{ cards: string[], score: number[], owner: string }>()
   &__score {
     font-size: 2rem;
     font-weight: bold;
+  }
+
+  &__number {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
   }
 }
 </style>
