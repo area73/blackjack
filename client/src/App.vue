@@ -11,7 +11,7 @@ import BJMarquee from './components/BJMarquee.vue';
       <h1 class="title ">Black Jack</h1>
     </div>
   </header>
-  <main class="playingCards faceImages rotateHand">
+  <main class="playingCards faceImages">
     <BJGameMat msg="mate">
       <template #news>
         <BJMarquee msg="You did it!" />
@@ -20,10 +20,10 @@ import BJMarquee from './components/BJMarquee.vue';
         <BJControls />
       </template>
       <template #dealer>
-        <BJHand :score="23" :cards="['*', 'D-9', 'H-K', 'C-K', 'D-K', 'S-K']" />
+        <BJHand owner="Dealer" :score="23" :cards="['*', 'D-9', 'H-K', 'C-K', 'D-K', 'S-K']" />
       </template>
       <template #player>
-        <BJHand :score="19" :cards="['S-J', 'C-5', 'H-Q']" />
+        <BJHand owner="Player" :score="19" :cards="['S-J', 'C-5', 'H-Q']" />
       </template>
     </BJGameMat>
   </main>
@@ -34,8 +34,8 @@ import BJMarquee from './components/BJMarquee.vue';
   font-size: 6rem;
   font-family: 'Carattere',
     sans-serif;
-  margin: 0.3em 0 0 0;
-  padding: 0;
+  margin: 0 0 0 0;
+  padding: 0.3em 0 0 0;
   text-align: center;
   line-height: 1;
   text-shadow: 0px 1px 9px rgba(1, 6, 20, 0.61);

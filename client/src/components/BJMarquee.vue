@@ -4,7 +4,7 @@ defineProps<{ msg: String }>()
 
 <template>
   <div class="bj-marquee">
-    <h1 class="bj-marquee__message">{{ msg }}</h1>
+    <h2 class="bj-marquee__message">{{ msg }}</h2>
   </div>
 </template>
 
@@ -12,10 +12,10 @@ defineProps<{ msg: String }>()
 .bj-marquee {
 
   &__message {
-    font-weight: 500;
-    font-size: 2.6rem;
-    position: relative;
-    top: -10px;
+    font-weight: 600;
+    font-size: 4rem;
+    padding: 0;
+    margin: 0;
   }
 }
 </style>
