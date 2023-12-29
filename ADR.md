@@ -30,7 +30,19 @@ For **integration test** or **end to end** I like to group all of them under `te
 **Vue3**: Vue is a well known frontend framework, as good as any other like react or angular.
 
 Another alternative could be dealing with plain JS, in this case since I don't have too much time
-and I also need to implement the Back For Front, going whit this approach will speed up thing a little bit
+and I also need to implement the Back For Front, going whit this approach will speed up things a bit
+
+### State management
+
+This application is not big so we could go with different approaches to maintain the state of the application and have all the components sync.
+
+The simplest one to avoid property drillings will be using a dependency injection like provider/inject pattern and have everything stored in a global object in the provider.
+
+The other solution could be using a standardized state management like Vuex (redux like) or Pinia.
+
+In this case I'm going to use Pinia which is the next generation of Vuex that has a slightly different approach, based on composables ( react hooks) and modularized by default
+
+### Testing
 
 **MSW**: MSW is a Mocked Service Worker , very easy to use and very handy to intercept calls to the server.
 We can us it for testing purpose
@@ -52,7 +64,7 @@ bundle (webpack) or transpile (babel) the code since it uses ES modules directly
 
 ### State
 
-Since our server is stateless , we need to set a mechanism to let the server store
+Since our server is stateless, we need to set a mechanism to let the server store
 information between API calls.
 
 In order to do so we are going to share a token between server and client to identify session.
