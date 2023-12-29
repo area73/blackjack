@@ -42,10 +42,16 @@ const onStand = () => {
 </script>
 
 <template>
-  <BJButton label="New Game" :disabled="false" :onClick="onNewGame" />
-  <BJButton label="Hit" :disabled="false" :onClick="onHit" />
-  <BJButton label="Stand" :disabled="false" :onClick="onStand" />
+  <div class="bj-controls">
+    <BJButton label="Hit" :disabled="true" :onClick="onHit" />
+    <BJButton label="Stand" :disabled="false" :onClick="onStand" />
+    <BJButton label="New Game" :disabled="false" :onClick="onNewGame" />
+  </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
+.bj-controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
 </style>
