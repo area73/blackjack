@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import BJControls from './components/BJControls.vue';
-import BJGameMat from './components/BJGameMat.vue';
-import BJHand from './components/BJHand.vue';
-import BJMarquee from './components/BJMarquee.vue';
-import { useGameStore } from './stores/game';
+import BJControls from '../components/BJControls.vue';
+import BJGameMat from '../components/BJGameMat.vue';
+import BJHand from '../components/BJHand.vue';
+import BJMarquee from '../components/BJMarquee.vue';
+import { useGameStore } from '../stores/game';
 
 const gameStore = useGameStore();
 const { dealerHand, playerHand } = gameStore;
