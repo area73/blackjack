@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import BJCard from './BJCard.vue';
 
-defineProps<{ cards: string[], score: number, owner: string }>()
+defineProps<{ cards: string[], score: number[], owner: string }>()
 </script>
 
 <template>
@@ -11,7 +11,7 @@ defineProps<{ cards: string[], score: number, owner: string }>()
         <BJCard :value="card" />
       </li>
     </ul>
-    <span class="bj-hand__score">{{ owner }} Score: {{ score }}</span>
+    <span class="bj-hand__score">{{ owner }} Score: {{ score.join(' / ') }}</span>
   </div>
 </template>
 

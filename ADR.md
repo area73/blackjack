@@ -84,3 +84,7 @@ I will use it as in-memory DB but I also comment the line to persist it into a f
 Do to lack of time , I'm not going to generate the OPEN API Specs for the interface agreement
 Ideally we should publish an OPEN API Json to share between back and front, and since we are using TS
 we could automatically generate the types needed
+
+### Security
+
+I disallow cors by adding `Access-Control-Allow-Origin: *` in order to test server with front end application and not having cors issues on the browser. On production environment this cannot be set to any origin and has to be modify
