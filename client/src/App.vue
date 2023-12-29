@@ -3,6 +3,10 @@ import BJControls from './components/BJControls.vue';
 import BJGameMat from './components/BJGameMat.vue';
 import BJHand from './components/BJHand.vue';
 import BJMarquee from './components/BJMarquee.vue';
+import { useGameStore } from './stores/game';
+
+const gameStore = useGameStore();
+const { dealerHand, playerHand } = gameStore;
 </script>
 
 <template>
@@ -12,18 +16,18 @@ import BJMarquee from './components/BJMarquee.vue';
     </div>
   </header>
   <main class="playingCards faceImages">
-    <BJGameMat msg="mate">
+    <BJGameMat>
       <template #news>
-        <BJMarquee msg="You did it!" />
+        <BJMarquee :msg="gameStore.userMessage" />
       </template>
       <template #controls>
         <BJControls />
       </template>
       <template #dealer>
-        <BJHand owner="Dealer" :score="23" :cards="['*', 'D-9', 'H-K', 'C-K', 'D-K', 'S-K']" />
+        <BJHand owner="Dealer" :score="dealerHand.score" :cards="dealerHand.cards" />
       </template>
       <template #player>
-        <BJHand owner="Player" :score="19" :cards="['S-J', 'C-5', 'H-Q']" />
+        <BJHand owner="Player" :score="playerHand.score" :cards="playerHand.cards" />
       </template>
     </BJGameMat>
   </main>
