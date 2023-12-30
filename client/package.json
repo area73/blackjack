@@ -16,7 +16,7 @@
     "test:components:dev": "cypress open --component --browser chrome",
     "test:components:visual-regenerate": "cypress run --env type=base --component --browser chrome",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build --force",
+    "typecheck": "vue-tsc --build --force",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "preinstall": "npx only-allow pnpm"
