@@ -1,9 +1,12 @@
 import { literals } from '@/lang/literals'
+import { useGameStore } from '@/stores/game'
 import { BASE_URL_API, ERROR_MESSAGES } from '@/utils/const'
+import type { APIResponse } from '@@/shared'
 import { createFetch, type AfterFetchContext, type OnFetchErrorContext } from '@vueuse/core'
 
 const beforeFetch = ({ options }: { options: RequestInit }) => {
-  const accessToken = localStorage.getItem('accessToken')
+  const { token } = useGameStore()
+  const accessToken = token
   if (accessToken) {
     options.headers = {
       ...options.headers,
@@ -23,7 +26,7 @@ export type CustomError = {
 }
 
 type ReqResponse = {
-  data: unknown
+  data: APIResponse
   response: Response | null
   error: any
 }

@@ -10,7 +10,10 @@
     "experimentalDecorators": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "@@/*": ["../types/*"]
+    }
   },
   "include": ["./env.d.ts","./src/**/*"],
   "exclude": ["node_modules"],

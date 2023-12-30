@@ -1,4 +1,4 @@
-import { type Game } from "../db";
+import type { Game } from "@@/shared";
 import { literals } from "../lang";
 
 export type Player = "user" | "dealer";
