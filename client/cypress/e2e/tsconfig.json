@@ -7,7 +7,7 @@
     },
     "isolatedModules": false,
     "target": "es5",
-    "lib": ["es5", "dom"],
+    "lib": ["ESNext", "dom"],
     "types": ["cypress",  "cypress-real-events", "cypress-visual-regression", "@testing-library/cypress", ]
   }
 }
