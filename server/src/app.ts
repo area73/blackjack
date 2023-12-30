@@ -1,16 +1,22 @@
 import cors from "@koa/cors";
 import "colors";
-import Koa, { type Middleware } from "koa";
+import Koa from "koa";
 import bodyParser from "koa-bodyparser";
-// import proxy from "koa-proxies";
+import logger from 'koa-logger';
 import appRouter from "./routes";
 
 const port = 3000;
 const app = new Koa();
+app.use(logger());
+app.use(cors({
+  allowMethods: ["GET", "OPTIONS"],
+  privateNetworkAccess: true,
+  allowHeaders: ["Content-Type", "Authorization", "Accept"],
+  exposeHeaders: ["Content-Length", "Date", "X-Request-Id"],
 
-app.use(cors() as Middleware);
+}));
+app.use(bodyParser());
 app.use(appRouter);
-app.use(bodyParser() as Middleware);
 app.on("error", (err, _ctx) => {
   console.log(`${err}`.white.bgRed);
 });

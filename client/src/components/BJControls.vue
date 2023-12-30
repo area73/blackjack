@@ -6,17 +6,21 @@ import { watch } from 'vue';
 import BJButton from './BJButton.vue';
 
 type ResponseBody = {}
-const { error, data, isFetching, execute } = useBlackJackFetch(API_URL.newGame, {
+const { error, data, isFetching, execute, onFetchResponse } = useBlackJackFetch(API_URL.newGame, {
   immediate: false
 }).json<ResponseBody>()
 
 watch(error, (errorState?: CustomError) => {
-  console.log('errorState: ', errorState);
+  if (errorState?.code !== 200) {
+    console.error('errorState: ', errorState?.message);
+  }
 })
 
+watch(onFetchResponse, (response) => {
+  console.log('onFetchResponse: ', response);
+})
 
 watch(data, (dataState) => {
-  console.log('data: ', data, dataState);
   if (dataState) {
     console.log('dataState =>', dataState);
   }
