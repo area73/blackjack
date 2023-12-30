@@ -1,49 +1,56 @@
 <script setup lang="ts">
 import type { CustomError } from '@/composables/useBlackJackFetch';
 import { useBlackJackFetch } from '@/composables/useBlackJackFetch';
+import { useGameStore } from '@/stores/game';
+import { APIMapper } from '@/utils/APIMapper';
 import { API_URL } from '@/utils/const';
-import { watch } from 'vue';
+import type { APIResponse } from "@@/shared";
+import { ref, watch } from 'vue';
 import BJButton from './BJButton.vue';
 
-type ResponseBody = {}
-const { error, data, isFetching, execute } = useBlackJackFetch(API_URL.newGame, {
+const gameStore = useGameStore()
+const apiUrl = ref<API_URL>(API_URL.newGame)
+
+const { error, data, execute } = useBlackJackFetch(apiUrl, {
   immediate: false
-}).json<ResponseBody>()
+}).json<APIResponse>()
 
 watch(error, (errorState?: CustomError) => {
-  console.log('errorState: ', errorState);
+  if (errorState?.code && errorState?.code !== 200) {
+    console.error('errorState: ', errorState?.message);
+  }
 })
 
-
 watch(data, (dataState) => {
-  console.log('data: ', data, dataState);
   if (dataState) {
+    // update game state
+    gameStore.$patch(APIMapper.fromAPI(dataState))
+
     console.log('dataState =>', dataState);
   }
 })
 
-watch(isFetching, (fetchState) => {
-  console.log('isFetching: ', fetchState);
-})
 
 const onNewGame = () => {
-  console.log('New Game');
+  apiUrl.value = API_URL.newGame
   execute()
 }
 
 const onHit = () => {
-  console.log('New Game');
+  apiUrl.value = API_URL.hit
+  execute()
 }
 
 const onStand = () => {
-  console.log('New Game');
+  apiUrl.value = API_URL.stand
+  execute()
 }
 
 </script>
 
 <template>
   <div class="bj-controls">
-    <BJButton label="Hit" :disabled="true" :onClick="onHit" />
+    <BJButton label="Hit" :disabled="false" :onClick="onHit" />
     <BJButton label="Stand" :disabled="false" :onClick="onStand" />
     <BJButton label="New Game" :disabled="false" :onClick="onNewGame" />
   </div>

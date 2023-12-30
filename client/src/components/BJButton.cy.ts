@@ -11,7 +11,6 @@ const buttonWithProps = (props?: Partial<ComponentProps<typeof BJButton>>) =>
     },
   })
 
-
 describe('<BJButton />', () => {
 
   it('Should mount a BJ button', () => {
@@ -48,7 +47,7 @@ describe('<BJButton />', () => {
     it('Should change visual state on hover', () => {
       buttonWithProps()
       cy.get('button').realHover().should('have.css', 'cursor', 'pointer')
-      // this will compare  a screenshot of real hover state of the button
+      // this will compare  a screenshot of real hover state of the button.
       // There is a bug with snapshots because they rely on DOM and cannot capture hover state
       // even though we are using realHover() from cypress-real-events.
       // A workaround is to add a class to the button on hover and compare the snapshot.

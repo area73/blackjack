@@ -1,10 +1,12 @@
 import { literals } from '@/lang/literals'
+import { useGameStore } from '@/stores/game'
 import { BASE_URL_API, ERROR_MESSAGES } from '@/utils/const'
-import type { OnFetchErrorContext } from '@vueuse/core'
-import { createFetch, type AfterFetchContext } from '@vueuse/core'
+import type { APIResponse } from '@@/shared'
+import { createFetch, type AfterFetchContext, type OnFetchErrorContext } from '@vueuse/core'
 
 const beforeFetch = ({ options }: { options: RequestInit }) => {
-  const accessToken = localStorage.getItem('accessToken')
+  const { token } = useGameStore()
+  const accessToken = token
   if (accessToken) {
     options.headers = {
       ...options.headers,
@@ -24,16 +26,14 @@ export type CustomError = {
 }
 
 type ReqResponse = {
-  data: unknown
+  data: APIResponse
   response: Response | null
   error: any
 }
 
-const onFetchError = ({
-  response
-}: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
-  const statusCode = response?.status
-    ? response.status as keyof typeof ERROR_MESSAGES
+const onFetchError = (ctx: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
+  const statusCode = ctx.response?.status
+    ? ctx.response.status as keyof typeof ERROR_MESSAGES
     : 1;
   const customError: CustomError = {
     code: statusCode,
@@ -42,6 +42,7 @@ const onFetchError = ({
 
   return { error: customError };
 }
+
 
 export const useBlackJackFetch = createFetch({
   baseUrl: BASE_URL_API,

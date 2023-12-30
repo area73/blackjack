@@ -1,5 +1,5 @@
+import { type Game } from "@@/shared";
 import { describe, expect, it } from "vitest";
-import { type Game } from "../db";
 import { literals } from "../lang";
 import { scoreEngine } from "./scoreEngine";
 

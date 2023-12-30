@@ -1,4 +1,5 @@
-import { getConnection, type Game } from "../db";
+import type { Game } from "@@/shared";
+import { getConnection } from "../db";
 import { literals } from "../lang";
 
 export type CreateGameParams = {
