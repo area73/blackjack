@@ -10,6 +10,9 @@ compareSnapshotCommand({
 })
 
 Cypress.Commands.overwrite('compareSnapshot', (originalFn, ...args) => {
+  // We will wait before taking the snapshots do to CI issues
+  // eslint-disable-next-line cypress/no-unnecessary-waiting
+  cy.wait(1000)
   cy.get('body').then(() => {
     // checks for font loading
     cy.document().its('fonts.status').should('equal', 'loaded')
