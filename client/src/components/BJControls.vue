@@ -52,7 +52,6 @@ const onStand = () => {
 
 const onTest = () => {
   modal.value?.showModal()
-  // modal.value?.close("wadus wadus")
 }
 
 </script>
