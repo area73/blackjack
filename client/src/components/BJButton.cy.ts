@@ -34,7 +34,6 @@ describe('<BJButton />', () => {
     cy.get('button').click().then(() => {
       cy.get('@onClick').should('have.been.called')
     })
-    // cy.get('@onClick').should('have.been.called')
   })
 
   describe('When button changes state', () => {

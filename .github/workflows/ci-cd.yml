@@ -36,5 +36,5 @@ jobs:
             pnpm lint
             pnpm typecheck
             pnpm test:unit
-            pnpm test:components
+            pnpm test:components:ci
 

@@ -13,6 +13,7 @@
     "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
     "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
     "test:components": "cypress run --component --browser chrome",
+    "test:components:ci": "cypress run --component --browser chrome --env ALLOW_VISUAL_REGRESSION_TO_FAIL=true",
     "test:components:dev": "cypress open --component --browser chrome",
     "test:components:visual-regenerate": "cypress run --env type=base --component --browser chrome",
     "build-only": "vite build",
