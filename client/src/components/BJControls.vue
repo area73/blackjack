@@ -2,16 +2,19 @@
 import type { CustomError } from '@/composables/useBlackJackFetch';
 import { useBlackJackFetch } from '@/composables/useBlackJackFetch';
 import { API_URL } from '@/utils/const';
-import { watch } from 'vue';
+import { ref, watch } from 'vue';
 import BJButton from './BJButton.vue';
 
+const apiUrl = ref<API_URL>(API_URL.newGame)
+
 type ResponseBody = {}
-const { error, data, isFetching, execute, onFetchResponse } = useBlackJackFetch(API_URL.newGame, {
+const { error, data, isFetching, execute, onFetchResponse } = useBlackJackFetch(apiUrl, {
   immediate: false
 }).json<ResponseBody>()
 
 watch(error, (errorState?: CustomError) => {
-  if (errorState?.code !== 200) {
+  // console.log('errorState: ', errorState);
+  if (errorState?.code && errorState?.code !== 200) {
     console.error('errorState: ', errorState?.message);
   }
 })
@@ -32,15 +35,20 @@ watch(isFetching, (fetchState) => {
 
 const onNewGame = () => {
   console.log('New Game');
+  apiUrl.value = API_URL.newGame
   execute()
 }
 
 const onHit = () => {
-  console.log('New Game');
+  console.log('HIT');
+  apiUrl.value = API_URL.hit
+  execute()
 }
 
 const onStand = () => {
-  console.log('New Game');
+  console.log('STAND');
+  apiUrl.value = API_URL.stand
+  execute()
 }
 
 </script>
