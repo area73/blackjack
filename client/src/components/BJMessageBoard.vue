@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 type BJMessageBoardProps = {
-  code: String,
+  code: number,
 }
 
 defineProps<BJMessageBoardProps>()

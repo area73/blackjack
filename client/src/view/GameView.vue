@@ -1,11 +1,32 @@
 <script setup lang="ts">
-import BJControls from '../components/BJControls.vue';
-import BJGameMat from '../components/BJGameMat.vue';
-import BJHand from '../components/BJHand.vue';
-import BJMarquee from '../components/BJMarquee.vue';
-import { useGameStore } from '../stores/game';
+import BJControls from '@/components/BJControls.vue';
+import BJDialog from '@/components/BJDialog.vue';
+import BJGameMat from '@/components/BJGameMat.vue';
+import BJHand from '@/components/BJHand.vue';
+import BJMarquee from '@/components/BJMarquee.vue';
+import BJMessageBoard from '@/components/BJMessageBoard.vue';
+import { useGameStore } from '@/stores/game';
+import { useGlobalStateStore } from '@/stores/globalState';
+import { ref } from 'vue';
+
+const modal = ref<InstanceType<typeof BJDialog>>();
 
 const gameStore = useGameStore();
+const globalStateStoreStore = useGlobalStateStore();
+
+globalStateStoreStore.$subscribe((_mutation, state) => {
+  // state.errorCode > 0 ? modal.value?.showModal() : modal.value?.close;
+  if (state.errorCode > 0) {
+    console.log('--->', state.errorCode)
+    console.log('--3->', modal.value)
+    modal.value?.showModal()
+  } else {
+    modal.value?.close()
+  }
+});
+
+
+
 const { dealerHand, playerHand } = gameStore;
 </script>
 
@@ -30,6 +51,11 @@ const { dealerHand, playerHand } = gameStore;
         <BJHand owner="Player" :score="playerHand.score" :cards="playerHand.cards" />
       </template>
     </BJGameMat>
+    <BJDialog ref="modal">
+      <template #content>
+        <BJMessageBoard :code="globalStateStoreStore.errorCode" />
+      </template>
+    </BJDialog>
   </main>
 </template>
 

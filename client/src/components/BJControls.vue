@@ -7,10 +7,8 @@ import { API_URL } from '@/utils/const';
 import type { APIResponse } from "@@/shared";
 import { ref, watch } from 'vue';
 import BJButton from './BJButton.vue';
-import BJDialog from './BJDialog.vue';
-import BJMessageBoard from './BJMessageBoard.vue';
 
-const modal = ref<InstanceType<typeof BJDialog>>();
+
 
 const gameStore = useGameStore()
 const apiUrl = ref<API_URL>(API_URL.newGame)
@@ -49,25 +47,13 @@ const onStand = () => {
   apiUrl.value = API_URL.stand
   execute()
 }
-
-const onTest = () => {
-  modal.value?.showModal()
-}
-
 </script>
 
 <template>
   <div class="bj-controls">
-    <BJDialog ref="modal">
-      <template #content>
-        <BJMessageBoard :code="'428'" />
-      </template>
-    </BJDialog>
-
     <BJButton label="Hit" :disabled="false" :onClick="onHit" />
     <BJButton label="Stand" :disabled="false" :onClick="onStand" />
     <BJButton label="New Game" :disabled="false" :onClick="onNewGame" />
-    <BJButton label="test" :disabled="false" :onClick="onTest" />
   </div>
 </template>
 

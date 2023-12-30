@@ -26,18 +26,22 @@ export type CustomError = {
 }
 
 type ReqResponse = {
-  data: APIResponse
+  data: APIResponse | null
   response: Response | null
-  error: any
+  error: {
+    message: string
+    stack?: string
+  }
 }
 
 const onFetchError = (ctx: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
+
   const statusCode = ctx.response?.status
     ? ctx.response.status as keyof typeof ERROR_MESSAGES
     : 1;
   const customError: CustomError = {
     code: statusCode,
-    message: ERROR_MESSAGES[statusCode] || literals.en.error.unknownError,
+    message: ERROR_MESSAGES[statusCode] || ctx.error.message || literals.en.error.unknownError,
   };
 
   return { error: customError };
