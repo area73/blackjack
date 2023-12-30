@@ -21,3 +21,20 @@ jobs:
           pnpm lint
           pnpm typecheck
           pnpm test
+  build-client:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v4
+
+        - uses: pnpm/action-setup@v2
+          with:
+            version: 8
+        - name: Setup and run tests for server
+          working-directory: ./client
+          run: |
+            pnpm install
+            pnpm lint
+            pnpm typecheck
+            pnpm test:unit
+            pnpm test:components:ci
+

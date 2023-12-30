@@ -9,7 +9,10 @@
     },
     {
       "path": "./tsconfig.vitest.json"
-    }
+    },
+    {
+      "path": "./cypress/e2e/tsconfig.json"
+    },
   ],
   "compilerOptions": {
     "module": "NodeNext"
