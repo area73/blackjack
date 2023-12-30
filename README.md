@@ -67,6 +67,14 @@ If there are changes on visual test and those changes are legit you will need to
 pnpm test:components:visual-regenerate # to regenerate components screenshots
 ```
 
+### Production suild
+
+To generate a production ready build you can run :
+
+```bash
+pnpm build-only
+```
+
 # SERVER
 
 Please use **pnpm** as a package manager for both projects
