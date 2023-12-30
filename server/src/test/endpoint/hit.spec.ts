@@ -1,7 +1,7 @@
+import { type Game } from "@@/shared";
 import supertest from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 import { app } from "../../app";
-import { type Game } from "../../db";
 import { literals } from "../../lang";
 
 describe("hit endpoint", () => {
