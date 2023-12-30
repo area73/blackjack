@@ -1,9 +1,8 @@
-import './assets/css/cards.css'
-import './assets/css/main.scss'
+import './baseStyles'; // global CSS styles
 
-import { createPinia } from 'pinia'
-import { createApp } from 'vue'
-import App from './view/GameView.vue'
+import { createPinia } from 'pinia';
+import { createApp } from 'vue';
+import App from './view/GameView.vue';
 
 const app = createApp(App)
 

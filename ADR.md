@@ -1,6 +1,6 @@
-# Architectural Decision Record
+# ARCHITECTURAL DECISION RECORD
 
-## General considerations
+## GENERAL CONSIDERATIONS
 
 ### TypeScript
 
@@ -52,10 +52,29 @@ We can us it for testing purpose
 **Vitest**: Since we are using Vue with Vite , we will run our unit test on Vitest,
 that way we don't need tom use Babel or Webpack and we reduce the friction of the tooling ecosystem
 
+When generating component test I like to store those cypress test along with the component like I do with unit test for the same reason than stated previously on unit testing.
+
+My approach is to test **visual modules (components or views) with cypress** and not vitest (or JEST), this is because I found more reliable and accurate to use a real DOM tester like cypress where I can test properties been passed to the component along with visual changes and states. Also the idea to test a component is to be as close as possible to user interaction and to rely on the platform , for that intention I also use `testing library to use native element like aria roles.
+
+**Visual regression test** there are a lot of tools to generate visual regression test. I like to generate those visual test locally and not rely on third party providers like chromatic, cypress.io etc.
+
+For this project I'm using `cypress-visual-regression` which is a handy plugin to be used in cypress to store base component and compare with current test.
+
+All tests used as a reference are stored in:
+
+```
+|-- /cypress/
+  |-- /snapshots/
+    |-- /base/  # all the base images stored as a reference under control version
+    |-- /actual/ # excluded from control version, will contain the actual images generated to be compared with base
+    |-- /diff/ # excluded from control version, if there are discrepancies between base and actual image a diff image will be generated
+```
+
 ## SERVER
 
-**Koa**: Koa is a new web framework designed by the team behind Express, which aims to be a smaller,
+**Koa**: Koa is a framework designed by the team behind Express, which aims to be a smaller,
 more expressive, and more robust foundation for web applications and APIs.
+Another advantage that I found is that it is modularize and comes with the minimum requirements and then the developes decides what middle wares to use
 
 **Vitest**: Used for unit test. This framework has an advantage over JEST since we don¡t need to
 bundle (webpack) or transpile (babel) the code since it uses ES modules directly with vite server
@@ -72,7 +91,7 @@ For the sake of simplicity we are going to share a random hash, in a more elabor
 
 ### Persistance layer
 
-Since we are keeping track of each game , we need to persist that information for future recovery.
+Since we are keeping track of each game, we need to persist that information for future recovery.
 
 We can use a Database like MySQL or postgreSQL or even noSQL data bases like Mongo and we can persist the data on file or just in memory.
 In this case I'm choosing **lowDB** which they describe as Simple to use type-safe local JSON database.
@@ -87,4 +106,4 @@ we could automatically generate the types needed
 
 ### Security
 
-I disallow cors by adding `Access-Control-Allow-Origin: *` in order to test server with front end application and not having cors issues on the browser. On production environment this cannot be set to any origin and has to be modify
+I disallow cors by adding `Access-Control-Allow-Origin: *` in order to test server with front end application and not having cors issues on the browser. On production environment this cannot be set to any origin

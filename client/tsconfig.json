@@ -11,7 +11,7 @@
       "path": "./tsconfig.vitest.json"
     },
     {
-      "path": "./tsconfig.cy.json"
+      "path": "./cypress/e2e/tsconfig.json"
     },
   ],
   "compilerOptions": {

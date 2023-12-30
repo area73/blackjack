@@ -2,9 +2,12 @@
   "extends": "@vue/tsconfig/tsconfig.dom.json",
   "include": ["./**/*", "../support/**/*", "../../src/**/*.cy.ts", "../../cypress.d.ts",  "../../env.d.ts"],
   "compilerOptions": {
+    "paths": {
+      "@/*": ["../../src/*"]
+    },
     "isolatedModules": false,
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress"]
+    "types": ["cypress",  "cypress-real-events", "cypress-visual-regression", "@testing-library/cypress", ]
   }
 }

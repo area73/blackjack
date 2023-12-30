@@ -1,5 +1,12 @@
 <script setup lang="ts">
-defineProps<{ label: String, disabled: boolean, onClick: () => void }>()
+
+type BJButtonProps = {
+  label: String,
+  disabled: boolean,
+  onClick: () => void
+}
+
+defineProps<BJButtonProps>()
 </script>
 
 <template>
@@ -23,14 +30,17 @@ defineProps<{ label: String, disabled: boolean, onClick: () => void }>()
   text-decoration: none;
   transition: background-color 0.2s ease;
 
-  &:hover {
-    background-color: hsl(139, 58%, 20%)
+  &:hover,
+  &.hover {
+    background-color: hsl(139, 58%, 20%);
+    cursor: pointer;
   }
 
   &:disabled {
     border: 1px solid hsl(139, 28%, 30%);
     background-color: hsl(139, 28%, 50%);
     color: hsl(143, 30%, 73%);
+    cursor: not-allowed;
     ;
   }
 
