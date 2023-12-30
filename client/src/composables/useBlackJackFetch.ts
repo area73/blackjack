@@ -30,7 +30,6 @@ type ReqResponse = {
 }
 
 const onFetchError = ({
-  data,
   response
 }: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
   const statusCode = response?.status
