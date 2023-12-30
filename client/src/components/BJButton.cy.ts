@@ -31,8 +31,10 @@ describe('<BJButton />', () => {
 
   it('Should execute a given function  when clicked', () => {
     buttonWithProps()
-    cy.get('button').click()
-    cy.get('@onClick').should('have.been.called')
+    cy.get('button').click().then(() => {
+      cy.get('@onClick').should('have.been.called')
+    })
+    // cy.get('@onClick').should('have.been.called')
   })
 
   describe('When button changes state', () => {
