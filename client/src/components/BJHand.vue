@@ -1,7 +1,14 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import BJCard from './BJCard.vue';
 
-defineProps<{ cards: string[], score: number[], owner: string }>()
+const props = defineProps<{ cards: string[], score: number[], owner: string }>()
+
+const isBusted = computed(() => {
+  return props.score.every((val: number) => val > 21);
+})
+
+
 </script>
 
 <template>
@@ -11,7 +18,9 @@ defineProps<{ cards: string[], score: number[], owner: string }>()
         <BJCard :value="card" />
       </li>
     </ul>
-    <div class="bj-hand__score">{{ owner }} Score: <span class="bj-hand__number">{{ score.join(' / ') }}</span></div>
+    <div class="bj-hand__score">{{ owner }} Score: <span class="bj-hand__number"
+        :class="{ 'bj-hand__number--busted': isBusted }">{{
+          score.join(' / ') }}</span></div>
   </div>
 </template>
 
@@ -25,6 +34,10 @@ defineProps<{ cards: string[], score: number[], owner: string }>()
   &__number {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.5rem;
+
+    &--busted {
+      color: #922626;
+    }
   }
 }
 </style>

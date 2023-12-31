@@ -35,7 +35,6 @@ type ReqResponse = {
 }
 
 const onFetchError = (ctx: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
-
   const statusCode = ctx.response?.status
     ? ctx.response.status as keyof typeof ERROR_MESSAGES
     : 1;
@@ -43,7 +42,6 @@ const onFetchError = (ctx: ReqResponse): Partial<OnFetchErrorContext<ReqResponse
     code: statusCode,
     message: ERROR_MESSAGES[statusCode] || ctx.error.message || literals.en.error.unknownError,
   };
-
   return { error: customError };
 }
 

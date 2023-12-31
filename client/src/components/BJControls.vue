@@ -2,14 +2,14 @@
 import type { CustomError } from '@/composables/useBlackJackFetch';
 import { useBlackJackFetch } from '@/composables/useBlackJackFetch';
 import { useGameStore } from '@/stores/game';
+import { useGlobalStateStore } from '@/stores/globalState';
 import { APIMapper } from '@/utils/APIMapper';
 import { API_URL } from '@/utils/const';
 import type { APIResponse } from "@@/shared";
 import { ref, watch } from 'vue';
 import BJButton from './BJButton.vue';
 
-
-
+const globalStateStoreStore = useGlobalStateStore()
 const gameStore = useGameStore()
 const apiUrl = ref<API_URL>(API_URL.newGame)
 
@@ -18,8 +18,11 @@ const { error, data, execute } = useBlackJackFetch(apiUrl, {
 }).json<APIResponse>()
 
 watch(error, (errorState?: CustomError) => {
+  console.log('errorState?.code ===> ', errorState?.code)
   if (errorState?.code && errorState?.code !== 200) {
-    console.error('errorState: ', errorState?.message);
+    globalStateStoreStore.$patch({
+      errorCode: errorState.code,
+    })
   }
 })
 
@@ -34,6 +37,7 @@ watch(data, (dataState) => {
 
 
 const onNewGame = () => {
+  gameStore.$reset()
   apiUrl.value = API_URL.newGame
   execute()
 }

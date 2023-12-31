@@ -28,5 +28,12 @@ export const useGameStore = defineStore('game', () => {
     return "playerTurn";
   })
 
-  return { gameState, token, userMessage, dealerHand, playerHand }
+  const $reset = () => {
+    token.value = '';
+    userMessage.value = '';
+    dealerHand.cards = [];
+    playerHand.cards = [];
+  }
+
+  return { gameState, token, userMessage, dealerHand, playerHand, $reset }
 })

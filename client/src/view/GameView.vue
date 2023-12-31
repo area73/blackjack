@@ -15,14 +15,7 @@ const gameStore = useGameStore();
 const globalStateStoreStore = useGlobalStateStore();
 
 globalStateStoreStore.$subscribe((_mutation, state) => {
-  // state.errorCode > 0 ? modal.value?.showModal() : modal.value?.close;
-  if (state.errorCode > 0) {
-    console.log('--->', state.errorCode)
-    console.log('--3->', modal.value)
-    modal.value?.showModal()
-  } else {
-    modal.value?.close()
-  }
+  state.errorCode > 0 ? modal.value?.showModal() : modal.value?.close;
 });
 
 
