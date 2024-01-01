@@ -8,7 +8,9 @@ export const hit: Middleware = async (ctx, _next) => {
     const game = await getGame(String(ctx.headers.authorization));
     const gameScore = scoreEngine(game);
     gameScore.hit();
-    ctx.body = { game, message: gameScore.playState().message, token: game.id } satisfies APIResponse;
+    const apiResponse: APIResponse = { game, message: gameScore.getPlayState(), token: game.id }
+    console.log(`${JSON.stringify(apiResponse)}`.yellow)
+    ctx.body = apiResponse;
   } catch (error) {
     ctx.throw(401, { message: String(error) });
   }

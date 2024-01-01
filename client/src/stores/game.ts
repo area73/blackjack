@@ -1,6 +1,6 @@
 import type { CardPlay } from '@@/shared'
 import { defineStore } from 'pinia'
-import { computed, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue'
 
 export type GameState = 'init' | 'playerTurn' | 'dealerTurn' | 'finished'
 
@@ -10,23 +10,21 @@ export const useGameStore = defineStore('game', () => {
   const dealerHand = reactive<CardPlay>({
     cards: [],
     score: [],
-    finished: false
+    state: {
+      code: 0,
+      message: 'not-started',
+    },
   })
   const playerHand = reactive<CardPlay>({
     cards: [],
     score: [],
-    finished: false
+    state: {
+      code: 0,
+      message: 'not-started',
+    },
   })
 
-  const gameState = computed(() => {
-    if (dealerHand.cards.length === 0 && playerHand.cards.length === 0) {
-      return "init";
-    }
-    if (playerHand.finished) {
-      return dealerHand.finished ? "finished" : "dealerTurn";
-    }
-    return "playerTurn";
-  })
+
 
   const $reset = () => {
     token.value = '';
@@ -35,5 +33,5 @@ export const useGameStore = defineStore('game', () => {
     playerHand.cards = [];
   }
 
-  return { gameState, token, userMessage, dealerHand, playerHand, $reset }
+  return { token, userMessage, dealerHand, playerHand, $reset }
 })

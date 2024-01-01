@@ -4,6 +4,7 @@ type BJMessageBoardProps = {
   code: number,
 }
 
+import { ERROR_MESSAGES } from '@/utils/const';
 defineProps<BJMessageBoardProps>()
 </script>
 
@@ -13,7 +14,7 @@ defineProps<BJMessageBoardProps>()
       {{ code }}
     </div>
     <div class="bj-message-board__message">
-      I'm a teapot
+      {{ ERROR_MESSAGES[code as keyof typeof ERROR_MESSAGES] || 'Unknown Error' }}
     </div>
   </div>
 </template>
