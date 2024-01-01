@@ -16,7 +16,7 @@
       "@@/*": ["../types/*"]
     }
   },
-  "include": ["./env.d.ts","./src/**/*", "vitest.config.ts"],
+  "include": ["./env.d.ts","./src/**/*", "vitest.config.ts",  "../types/*"],
   "exclude": ["node_modules"],
   "ts-node": {
     "esm": true

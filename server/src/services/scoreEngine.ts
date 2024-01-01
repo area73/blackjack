@@ -131,7 +131,6 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     addCardToPlayer(getCardFromDeck(), "user"); // hand one card to user
     addCardToPlayer(getCardFromDeck(), "user"); // hand one card to user
     addCardToPlayer(getCardFromDeck(), "dealer"); // hand one card to dealer
-    addCardToPlayer(getCardFromDeck(), "dealer"); // hand one card to dealer
     // calculate score for each player
     game.user.score = updateScore("user");
     game.dealer.score = updateScore("dealer");
