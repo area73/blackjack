@@ -21,3 +21,19 @@ export const DECK = DECK_COLORS.map((color) =>
   DECK_VALUES.flatMap((value) => `${color}-${value}`)
 ).flat();
 
+
+export const STATUS_CODES = {
+  OK: 200,
+  CREATED: 201,
+  BAD_REQUEST: 400,
+  UNAUTHORIZED: 401,
+  NOT_FOUND: 404,
+  INTERNAL_SERVER_ERROR: 500,
+  USER_WIN: 2000,
+  USER_PLAYING: 2100,
+  DEALER_WIN: 4000,
+  DEALER_PLAYING: 4100,
+  DRAW: 3000,
+  ONGOING: 1000,
+  INIT: 0,
+} as const;

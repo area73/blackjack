@@ -1,8 +1,8 @@
 import { type Game } from "@@/shared";
 
 import { beforeEach, describe, expect, it } from "vitest";
+import { STATUS_CODES } from "../config";
 import { literals } from "../lang";
-import { STATUS_CODES } from "../shared";
 import { scoreEngine } from "./scoreEngine";
 
 let sampleGame: Game;
