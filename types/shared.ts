@@ -47,7 +47,7 @@ export type PlayState = {
 };
 
 
-const STATUS_CODES = {
+export const STATUS_CODES = {
   OK: 200,
   CREATED: 201,
   BAD_REQUEST: 400,
@@ -64,4 +64,4 @@ const STATUS_CODES = {
 } as const;
 
 
-export default STATUS_CODES;
+
