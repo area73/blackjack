@@ -31,12 +31,13 @@ defineExpose({
 </template>
 <style lang="scss">
 .bj-dialog {
-  width: 600px;
-  height: 400px;
+  width: 400px;
+  height: 300px;
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 5px 30px 0 rgb(0 0 0 / 10%);
   animation: fadeIn 1s ease both;
+  padding: 48px;
 
   &::backdrop {
     animation: fadeIn 1s ease both;

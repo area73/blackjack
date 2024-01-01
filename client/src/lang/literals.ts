@@ -8,15 +8,23 @@
 export const literals = {
   en: {
     error: {
-      unauthorized:  'You are not authorized to access this resource.',
-      unknownError: 'Unknown error',
-      forbidden: 'Forbidden',
-      notFound: 'Not found',
-      internalServerError: 'Internal server error'
-    },
-
-
-
+      1: {
+        reason: "Unknown error, probably a network error.",
+        hint: 'Did you start the server?'
+      },
+      401: {
+        reason: "You are trying to acces to a resource that you are not authorized.",
+        hint: 'Are you trying to cheat?'
+      },
+      404: {
+        reason: 'Resource not found',
+        hint: 'This is like Jhon Travolta in Pulp Fiction, you know?'
+      },
+      500: {
+        reason: "Internal server error",
+        hint: 'Who knows what happened?'
+      }
+    }
   },
 
 } as const;
