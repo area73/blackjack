@@ -1,4 +1,4 @@
-import { STATUS_CODES } from '@@/shared'
+import STATUS_CODES from '@@/shared'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useGameStore } from './game'
