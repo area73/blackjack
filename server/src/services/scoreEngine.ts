@@ -69,8 +69,9 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     const playerScore = game[player].score;
     const messageMap: Record<PlayerState, boolean> = {
       busted: playerScore.every((score) => score > 21),
-      blackjack: playerScore[0] === 21,
-      stand: player === 'dealer' && playerScore.every((score) => score >= DEALER_MIN_SCORE),
+      stand: playerScore.some((score) => score === 21) || player === 'dealer' && playerScore.every((score) => score >= DEALER_MIN_SCORE),
+      // black jack is an special case, we need to check if the player has 2 cards and the score is 21
+      blackjack: playerScore[0] === 21 && game[player].cards.length === 2,
       playing: game[player].cards.length > 0,
       "not-started": true
     };
