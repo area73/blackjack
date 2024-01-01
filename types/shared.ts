@@ -64,4 +64,4 @@ const STATUS_CODES = {
 } as const;
 
 
-export default { STATUS_CODES };
+export default STATUS_CODES;
