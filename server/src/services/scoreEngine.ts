@@ -1,5 +1,5 @@
 import type { Game, PlayerState, PlayState } from "@@/shared";
-import STATUS_CODES from "@@/shared";
+import { STATUS_CODES } from "@@/shared";
 import { literals } from "../lang";
 
 export type Player = "user" | "dealer";

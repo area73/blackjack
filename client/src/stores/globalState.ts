@@ -1,4 +1,4 @@
-import STATUS_CODES from '@@/shared'
+import { STATUS_CODES } from '@@/shared'
 import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 import { useGameStore } from './game'
