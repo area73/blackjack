@@ -2,19 +2,24 @@
 import { computed } from 'vue';
 import BJCard from './BJCard.vue';
 
-const props = defineProps<{ cards: string[], score: number[], owner: string }>()
+const props = defineProps<{ cards: string[], score: number[], owner: 'dealer' | 'user' }>()
 
 const isBusted = computed(() => {
   return props.score.every((val: number) => val > 21);
 })
 
+const cards = computed(() =>
+  (props.owner === 'dealer' && props.cards.length === 1)
+    ? ['*', ...props.cards]
+    : props.cards.filter((card) => card !== '*')
+);
 
 </script>
 
 <template>
   <div class="bj-hand">
     <ul class="hand">
-      <li v-for="(card, index) in cards" :value="card" :key="index">
+      <li v-for="(card, index) in cards" :value="card" :key="index + card">
         <BJCard :value="card" />
       </li>
     </ul>

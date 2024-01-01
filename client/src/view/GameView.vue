@@ -38,10 +38,10 @@ const { dealerHand, playerHand } = gameStore;
         <BJControls />
       </template>
       <template #dealer>
-        <BJHand owner="Dealer" :score="dealerHand.score" :cards="dealerHand.cards" />
+        <BJHand owner="dealer" :score="dealerHand.score" :cards="dealerHand.cards" />
       </template>
       <template #player>
-        <BJHand owner="Player" :score="playerHand.score" :cards="playerHand.cards" />
+        <BJHand owner="user" :score="playerHand.score" :cards="playerHand.cards" />
       </template>
     </BJGameMat>
     <BJDialog ref="modal">
