@@ -1,3 +1,4 @@
+import { STATUS_CODES } from '@@/shared'
 import { defineStore } from 'pinia'
 import { computed, reactive, ref } from 'vue'
 import { useGameStore } from './game'
@@ -8,20 +9,12 @@ export const useGlobalStateStore = defineStore('globalState', () => {
   const gameStore = useGameStore()
   const errorCode = ref(0)
   const controls = reactive({
-    hit: computed(() => gameState.value === "playerTurn"),
-    stand: computed(() => gameState.value === "playerTurn"),
-    newGame: computed(() => gameState.value === "finished" || gameState.value === "init"),
+    hit: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_PLAYING),
+    stand: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_PLAYING),
+    newGame: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_WIN || gameStore.userMessage.code === STATUS_CODES.DEALER_WIN || gameStore.userMessage.code === STATUS_CODES.DRAW),
   })
 
-  const gameState = computed(() => {
-    if (gameStore.dealerHand.cards.length === 0 && gameStore.playerHand.cards.length === 0) {
-      return "init";
-    }
-    if (gameStore.playerHand.finished) {
-      return gameStore.dealerHand.finished ? "finished" : "dealerTurn";
-    }
-    return "playerTurn";
-  })
 
-  return { errorCode, controls }
+
+  return { controls, errorCode }
 })

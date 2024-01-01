@@ -2,7 +2,6 @@ import type { APIResponse } from "@@/shared";
 import "colors";
 import { type Middleware } from "koa";
 import { DECK } from "../config";
-import { literals } from "../lang";
 import { shuffleDeck } from "../services/deck";
 import { createGame } from "../services/game";
 import { scoreEngine } from "../services/scoreEngine";
@@ -16,11 +15,11 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   const deck = shuffleDeck(DECK);
   // generate a new game
   const game = await createGame({ token, deck });
-  const engine = scoreEngine(game);
-  const play = engine.initGame();
+  const gameScore = scoreEngine(game);
+  const play = gameScore.initGame();
   // For security we will remove the deck from the response
   const initialPlay = { ...play, deck: undefined };
-  const apiResponse: APIResponse = { message: { code: 0, message: literals.en.game.newGame }, game: initialPlay, token };
+  const apiResponse: APIResponse = { message: gameScore.getPlayState(), game: initialPlay, token };
   // only for debuggin purposes
   console.log(`${JSON.stringify(apiResponse)}`.yellow)
   ctx.body = apiResponse;

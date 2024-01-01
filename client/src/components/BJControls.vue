@@ -29,9 +29,11 @@ const { error, data, execute } = useBlackJackFetch(apiUrl, {
 
 watch(error, (errorState?: CustomError) => {
   if (errorState?.code && errorState?.code !== 200) {
+
     globalStateStoreStore.$patch({
       errorCode: errorState.code,
     })
+
   }
 })
 
@@ -40,7 +42,7 @@ watch(data, (dataState) => {
     // update game state
     gameStore.$patch(APIMapper.fromAPI(dataState))
     //  if user has finish and dealer not then dealer will play
-    if (dataState.game.user.finished && !dataState.game.dealer.finished) {
+    if (dataState.game.user.state === 'stand' && dataState.game.dealer.state === 'playing') {
       apiUrl.value = API_URL.hit
       execute()
     }

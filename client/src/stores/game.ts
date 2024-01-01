@@ -1,34 +1,27 @@
-import type { CardPlay } from '@@/shared'
+import type { CardPlay, PlayState } from '@@/shared'
 import { defineStore } from 'pinia'
 import { reactive, ref } from 'vue'
 
-export type GameState = 'init' | 'playerTurn' | 'dealerTurn' | 'finished'
 
 export const useGameStore = defineStore('game', () => {
   const token = ref('')
-  const userMessage = ref('')
+  const userMessage = ref<PlayState>({ code: 0, message: 'game not started' })
   const dealerHand = reactive<CardPlay>({
     cards: [],
     score: [],
-    state: {
-      code: 0,
-      message: 'not-started',
-    },
+    state: 'not-started',
   })
   const playerHand = reactive<CardPlay>({
     cards: [],
     score: [],
-    state: {
-      code: 0,
-      message: 'not-started',
-    },
+    state: 'not-started',
   })
 
 
 
   const $reset = () => {
     token.value = '';
-    userMessage.value = '';
+    userMessage.value = { code: 0, message: 'game not started' };
     dealerHand.cards = [];
     playerHand.cards = [];
   }

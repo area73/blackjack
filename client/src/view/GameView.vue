@@ -32,7 +32,7 @@ const { dealerHand, playerHand } = gameStore;
   <main class="playingCards faceImages">
     <BJGameMat>
       <template #news>
-        <BJMarquee :msg="gameStore.userMessage" />
+        <BJMarquee :msg="gameStore.userMessage.message" />
       </template>
       <template #controls>
         <BJControls />
