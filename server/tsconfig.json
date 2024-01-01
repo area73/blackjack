@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "rootDirs": ["./src", "../types"],
     "outDir": "./dist",
     "lib": ["ES5", "ES6", "ESNext"],
     "target": "ES2020",

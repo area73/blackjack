@@ -20,7 +20,7 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   // For security we will remove the deck from the response
   const initialPlay = { ...play, deck: undefined };
   const apiResponse: APIResponse = { message: gameScore.getPlayState(), game: initialPlay, token };
-  // only for debuggin purposes
+  // only for debugging purposes
   console.log(`${JSON.stringify(apiResponse)}`.yellow)
   ctx.body = apiResponse;
 };
