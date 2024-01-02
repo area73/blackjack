@@ -31,12 +31,11 @@ describe("hit endpoint", () => {
     it("should update state of user to finished if busted", async () => {
       let response = await req.get("/hit").set("Authorization", token);
 
-      while (!(response.body.game.user.finished as boolean)) {
+      while (!(response.body.game.user.state === "finished")) {
         response = await req.get("/hit").set("Authorization", token);
       }
 
       expect(response.status).toBe(200);
-      expect(response.body.game.user.finished).toBe(true);
       const lastScore =
         response.body.game.user.score[response.body.game.user.score.length - 1];
       expect(lastScore).toBeGreaterThan(21);
