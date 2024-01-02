@@ -4,7 +4,7 @@ defineProps<{ msg: string }>()
 
 <template>
   <div class="bj-marquee">
-    <h2 class="bj-marquee__message">{{ msg }}</h2>
+    <h2 class="bj-marquee__message" role="status">{{ msg }}</h2>
   </div>
 </template>
 

@@ -14,13 +14,12 @@ const gameStore = useGameStore()
 const apiUrl = ref<API_URL>(API_URL.newGame)
 const canHit = ref(false)
 const canStand = ref(false)
-const canStart = ref(false)
-
+const canStart = ref(true)
 
 globalStateStoreStore.$subscribe((_mutation, state) => {
-  canHit.value = !state.controls.hit
-  canStand.value = !state.controls.stand
-  canStart.value = !state.controls.newGame
+  canHit.value = state.controls.hit
+  canStand.value = state.controls.stand
+  canStart.value = state.controls.newGame
 })
 
 const { error, data, execute } = useBlackJackFetch(apiUrl, {
@@ -69,9 +68,9 @@ const onStand = () => {
 
 <template>
   <div class="bj-controls">
-    <BJButton label="Hit" :disabled="canHit" :onClick="onHit" />
-    <BJButton label="Stand" :disabled="canStand" :onClick="onStand" />
-    <BJButton label="New Game" :disabled="canStart" :onClick="onNewGame" />
+    <BJButton label="Hit" name="Hit" :disabled="!canHit" :onClick="onHit" />
+    <BJButton label="Stand" name="Stand" :disabled="!canStand" :onClick="onStand" />
+    <BJButton label="New Game" name="New Game" :disabled="!canStart" :onClick="onNewGame" />
   </div>
 </template>
 

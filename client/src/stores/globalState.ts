@@ -11,7 +11,7 @@ export const useGlobalStateStore = defineStore('globalState', () => {
   const controls = reactive({
     hit: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_PLAYING),
     stand: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_PLAYING),
-    newGame: computed(() => gameStore.userMessage.code === STATUS_CODES.USER_WIN || gameStore.userMessage.code === STATUS_CODES.DEALER_WIN || gameStore.userMessage.code === STATUS_CODES.DRAW),
+    newGame: computed(() => gameStore.userMessage.code !== STATUS_CODES.USER_PLAYING && gameStore.userMessage.code !== STATUS_CODES.DEALER_PLAYING),
   })
 
 

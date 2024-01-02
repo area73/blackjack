@@ -5,7 +5,7 @@ import BJCard from './BJCard.vue';
 const props = defineProps<{ cards: string[], score: number[], owner: 'dealer' | 'user' }>()
 
 const isBusted = computed(() => {
-  return props.score.every((val: number) => val > 21);
+  return props.score.length > 0 && props.score.every((val: number) => val > 21);
 })
 
 const cards = computed(() =>
@@ -18,14 +18,14 @@ const cards = computed(() =>
 
 <template>
   <div class="bj-hand">
-    <ul class="hand">
-      <li v-for="(card, index) in cards" :value="card" :key="index + card">
+    <ul class="hand" :name="owner">
+      <li v-for="(card, index) in cards" :name="card" :key="index + card">
         <BJCard :value="card" />
       </li>
     </ul>
     <div class="bj-hand__score">{{ owner }} Score: <span class="bj-hand__number"
-        :class="{ 'bj-hand__number--busted': isBusted }">{{
-          score.join(' / ') }}</span></div>
+        :class="{ 'bj-hand__number--busted': isBusted }" :data-testid="`${owner}-score`">{{
+          score.length > 0 ? score.join(' / ') : '0' }}</span></div>
   </div>
 </template>
 
