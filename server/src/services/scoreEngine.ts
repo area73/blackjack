@@ -118,7 +118,9 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
       const cardScore = getCardScore(card);
       return acc + cardScore;
     }, 0);
-    const combinedScore = hasAce ? [score, score + 10].filter((score) => score <= 21) : [score];
+    const combinedScore = hasAce
+      ? [score, score + 10].filter((score, idx) => idx === 0 || score <= 21)
+      : [score];
     return combinedScore;
   };
 
