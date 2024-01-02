@@ -152,6 +152,18 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
    * @returns {PlayState} the state of the game
    */
   const getPlayState = (): PlayState => {
+    if (game.user.cards.length === 2 && game.user.score[1] === 21) {
+      return {
+        code: STATUS_CODES.BLACK_JACK,
+        message: literals.en.game.userWin,
+      };
+    }
+    if (game.dealer.cards.length === 2 && game.dealer.score[1] === 21) {
+      return {
+        code: STATUS_CODES.BLACK_JACK,
+        message: literals.en.game.dealerWin,
+      };
+    }
     // if game not started
     if (game.user.state === "not-started") {
       return {
