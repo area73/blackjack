@@ -1,3 +1,4 @@
+import { type APIResponse } from "@@/shared";
 import { type Middleware } from "koa";
 import { getGame } from "../services/game";
 import { scoreEngine } from "../services/scoreEngine";
@@ -7,7 +8,9 @@ export const stand: Middleware = async (ctx, _next) => {
     const game = await getGame(String(ctx.headers.authorization));
     const gameScore = scoreEngine(game);
     gameScore.stand();
-    ctx.body = { game, message: gameScore.playState };
+    const apiResponse: APIResponse = { game, message: gameScore.getPlayState(), token: game.id }
+    console.log(`${JSON.stringify(apiResponse)}`.yellow)
+    ctx.body = apiResponse;
   } catch (error) {
     ctx.throw(401, { message: String(error) });
   }

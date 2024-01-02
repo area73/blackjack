@@ -1,252 +1,146 @@
 import { type Game } from "@@/shared";
-import { describe, expect, it } from "vitest";
+
+import { beforeEach, describe, expect, it } from "vitest";
+import { STATUS_CODES } from "../config";
 import { literals } from "../lang";
 import { scoreEngine } from "./scoreEngine";
 
+let sampleGame: Game;
+beforeEach(() => {
+  sampleGame = {
+    id: "abc",
+    deck: ["S-2", "S-5", "H-10", "D-J", "H-K"],
+    dealer: {
+      cards: ["H-4", "D-3"],
+      score: [7],
+      state: "not-started"
+    },
+    user: {
+      cards: ["H-3", "D-K"],
+      score: [13],
+      state: "playing"
+    },
+  };
+})
+
 describe("scoreEngine", () => {
-  describe("calculateScore", () => {
-    it("should calculate the score of the current play for the user", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
+
+  describe("init a game", () => {
+    it("should return the given game without modifications", () => {
+      const currentEngine = scoreEngine(sampleGame);
+      expect(currentEngine.game).toStrictEqual(sampleGame);
+    });
+    it("should return the given game with new hands for user and dealer", () => {
+      const previousGame = {
         user: {
-          cards: ["H-4", "D-3", "C-5", "D-9"],
-          score: [0],
-          finished: false,
+          cards: ["H-3", "D-K"],
+          score: [13],
+          state: "playing"
         },
         dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
+          cards: ["H-4", "D-3"],
+          score: [7],
+          state: "not-started"
         },
       };
-      const currentEngine = scoreEngine(game);
-      const score = currentEngine.calculateScore("user");
-
-      expect(score).toStrictEqual([21]);
+      const currentEngine = scoreEngine(sampleGame);
+      currentEngine.initGame();
+      expect(currentEngine.game.dealer.cards).not.toStrictEqual(previousGame.dealer.cards);
+      expect(currentEngine.game.user.cards).not.toStrictEqual(previousGame.user.cards);
     });
-    it("should calculate the score of the current play for the dealer", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: ["H-9", "D-9", "D-9"],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: ["H-4", "D-3", "C-5", "D-9"],
-          score: [0],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      const score = currentEngine.calculateScore("dealer");
 
-      expect(score).toStrictEqual([21]);
-    });
-    it("should return an array of 2 possible score when there is an Ace on the hand and both scores are not busted", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: ["H-3", "D-A", "C-5", "D-2"],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: ["c"],
-          score: [0],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      const score = currentEngine.calculateScore("user");
-
-      expect(score).toStrictEqual([11, 21]);
-    });
-    it("should return an array of 2 possible score when there are more than 1 Ace on the hand and none score is busted", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: ["S-A", "H-A", "D-A", "C-2", "H-6"],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: ["c"],
-          score: [0],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      const score = currentEngine.calculateScore("user");
-
-      expect(score).toStrictEqual([11, 21]);
-    });
-    it("should return an array of 1 possible score when there are more than 1 Ace on the hand and some score is busted", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: ["S-A", "H-A", "D-A", "C-5", "H-6"],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: ["c"],
-          score: [0],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      const score = currentEngine.calculateScore("user");
-
-      expect(score).toStrictEqual([14, 24]);
-    });
   });
   describe("hit", () => {
     it("should remove the card from the beginning of the deck and add it to the player hand", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: [],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
-        },
-      };
+      const game = { ...sampleGame }
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
-      expect(game.user.cards).toStrictEqual(["S-2"]);
+      expect(game.deck).toStrictEqual(["S-5", "H-10", "D-J", "H-K"]);
+      expect(game.user.cards).toStrictEqual(["H-3", "D-K", "S-2"]);
+    });
+    it("should update the score of the user hand", () => {
+      const game = { ...sampleGame }
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      expect(game.user.score).toStrictEqual([15]);
+    });
+    it("should update the score and split it if the user gets an ace", () => {
+      const game = { ...sampleGame, deck: ["S-A", "H-10", "D-J", "H-K"] }
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      expect(game.user.score).toStrictEqual([14]);
+    });
+    it("should return an array of 2 possible score when there is an Ace on the hand and both scores are not busted", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          ...sampleGame.user,
+          cards: ["H-3", "D-A", "C-5", "D-2"],
+        },
+      };
+      const currentEngine = scoreEngine(game)
+      currentEngine.hit();
+      expect(currentEngine.game.user.score).toStrictEqual([13]);
     });
     it("should throw an error if there are no more cards", () => {
       const game: Game = {
-        id: "abc",
+        ...sampleGame,
         deck: [],
-        user: {
-          cards: [],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
-        },
       };
       const currentEngine = scoreEngine(game);
       expect(() => {
         currentEngine.hit();
       }).toThrowError(literals.en.error.noMoreCards);
     });
-    it("should add a new card to the player hand", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
-        user: {
-          cards: ["S-3"],
-          score: [0],
-          finished: false,
-        },
-        dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
-      expect(game.user.cards).toStrictEqual(["S-3", "S-2"]);
-    });
     it("Should finish user if busted after hit", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["S-9", "S-5", "H-10"],
-        user: {
-          cards: ["S-7", "S-4", "S-5"],
-          score: [16],
-          finished: false,
-        },
-        dealer: {
-          cards: ["S-7"],
-          score: [7],
-          finished: false,
-        },
+        ...sampleGame,
+        deck: ["S-K", "S-2", "S-5", "H-10"],
       };
-
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.user.finished).toBe(true);
+      expect(game.user.state).toBe('busted');
     });
 
     it("should not add a new card to user if the user is busted", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["S-1", "S-7", "H-7"],
+        ...sampleGame,
         user: {
-          cards: ["S-3", "S-4", "S-5"],
-          score: [22, 27],
-          finished: false,
-        },
-        dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
+          cards: ["S-K", "D-Q", "H-J"],
+          score: [30],
+          state: "busted",
         },
       };
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-7", "H-7"]);
-      expect(game.user.cards).toStrictEqual(["S-3", "S-4", "S-5"]);
+      expect(game.user.cards).toStrictEqual(["S-K", "D-Q", "H-J"]);
     });
     it("should not add a new card to user if the user has already finished", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
+        ...sampleGame,
         user: {
-          cards: ["S-3", "S-4", "S-5"],
-          score: [12],
-          finished: true,
-        },
-        dealer: {
-          cards: [],
-          score: [0],
-          finished: false,
+          cards: ["S-K", "D-Q", "H-J"],
+          score: [30],
+          state: "stand",
         },
       };
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
-      expect(game.user.cards).toStrictEqual(["S-3", "S-4", "S-5"]);
+      expect(game.user.cards).toStrictEqual(["S-K", "D-Q", "H-J"],);
     });
     it("should add a new card to the dealer if the user has finish his turn", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["S-2", "S-5", "H-10"],
+        ...sampleGame,
         user: {
-          cards: ["S-3", "S-4", "S-5"],
-          score: [12],
-          finished: true,
-        },
-        dealer: {
-          cards: ["S-9"],
-          score: [0],
-          finished: false,
+          cards: ["D-Q", "H-J"],
+          score: [20],
+          state: "stand",
         },
       };
       const currentEngine = scoreEngine(game);
       currentEngine.hit();
-      expect(game.deck).toStrictEqual(["S-5", "H-10"]);
-      expect(game.dealer.cards).toStrictEqual(["S-9", "S-2"]);
+      expect(game.deck).toStrictEqual(["S-5", "H-10", "D-J", "H-K"]);
+      expect(game.dealer.cards).toStrictEqual(["H-4", "D-3", "S-2"]);
     });
     it("should not add a new card if the dealer's score is higher than 16", () => {
       const game: Game = {
@@ -255,12 +149,12 @@ describe("scoreEngine", () => {
         user: {
           cards: ["S-3", "S-4", "S-5"],
           score: [12],
-          finished: true,
+          state: 'stand',
         },
         dealer: {
           cards: ["S-9", "S-8"],
           score: [17],
-          finished: false,
+          state: 'playing',
         },
       };
       const currentEngine = scoreEngine(game);
@@ -268,59 +162,68 @@ describe("scoreEngine", () => {
         currentEngine.hit();
       }).toThrowError(literals.en.error.notAllowed);
     });
+    it("should return an array of 2 possible score when there are more than 1 Ace on the hand and none score is busted", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          ...sampleGame.user,
+          cards: ["S-A", "H-A", "D-A", "C-2"],
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      expect(currentEngine.game.user.score).toStrictEqual([7, 17]);
+    });
+    it("should return an array of 1 possible score when there are more than 1 Ace on the hand and some score is busted", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          ...sampleGame.user,
+          cards: ["S-A", "H-A", "D-A", "C-5", "H-6"],
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      currentEngine.hit();
+      expect(currentEngine.game.user.score).toStrictEqual([16]);
+    });
   });
   describe("stand", () => {
-    it("should set the user as finished", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
-        user: {
-          cards: ["A-3", "S-9", "A-5"],
-          score: [18],
-          finished: false,
-        },
-        dealer: {
-          cards: ["H-7"],
-          score: [7],
-          finished: false,
-        },
-      };
-      const currentEngine = scoreEngine(game);
+    it("should set the user as stand", () => {
+      const currentEngine = scoreEngine(sampleGame);
       const isFinished = currentEngine.stand();
       expect(isFinished).toBe(true);
+      expect(sampleGame.user.state).toBe("stand");
     });
-    it("should set the dealer as finished", () => {
+    it("should set the dealer as stand", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
+        ...sampleGame,
+        dealer: {
+          cards: ["H-K", "D-5"],
+          score: [15],
+          state: "playing"
+        },
         user: {
           cards: ["A-3", "S-9", "A-5"],
           score: [18],
-          finished: true,
-        },
-        dealer: {
-          cards: ["H-9", "S-9"],
-          score: [18],
-          finished: false,
+          state: 'stand',
         },
       };
       const currentEngine = scoreEngine(game);
-      currentEngine.stand();
-      expect(game.dealer.finished).toBe(true);
+      currentEngine.hit();
+      expect(game.dealer.state).toBe("stand");
     });
-    it("should NOT set the dealer as finished because is under minimun number", () => {
+    it("should NOT set the dealer as stand because is under minimun number and needs to hit more cards", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
+        ...sampleGame,
         user: {
           cards: ["A-3", "S-9", "A-5"],
           score: [18],
-          finished: true,
+          state: "stand",
         },
         dealer: {
-          cards: ["H-8", "S-8"],
-          score: [16],
-          finished: false,
+          cards: ["H-2", "S-2"],
+          score: [6],
+          state: "playing"
         },
       };
       const currentEngine = scoreEngine(game);
@@ -330,63 +233,120 @@ describe("scoreEngine", () => {
     });
   });
   describe("get state of the play", () => {
-    it("should return a 2000 code if the user wins", () => {
-      const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
-        user: {
-          cards: ["A-2", "A-3", "S-9", "A-5"],
-          score: [20],
-          finished: true,
-        },
-        dealer: {
-          cards: ["H-8", "S-8", "A-3"],
-          score: [19],
-          finished: true,
-        },
-      };
-      const currentEngine = scoreEngine(game);
-      const state = currentEngine.playState();
-      expect(state.code).toBe(2000);
+    it("should return the state of the play", () => {
+      const currentEngine = scoreEngine(sampleGame);
+      const playState = currentEngine.getPlayState();
+      expect(playState.message).toBeDefined();
+      expect(playState.code).toBeDefined();
     });
-    it("should return a 4000 code if the dealer wins", () => {
+    it("should return the state of the play when dealer is busted and user stand", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
+        ...sampleGame,
         user: {
-          cards: ["A-3", "S-9", "A-5"],
-          score: [18],
-          finished: true,
+          cards: ["S-K", "D-Q"],
+          score: [20],
+          state: "stand",
         },
         dealer: {
-          cards: ["H-8", "S-8", "A-3"],
-          score: [19],
-          finished: true,
+          cards: ["S-J", "D-4", "H-J"],
+          score: [24],
+          state: "busted",
         },
       };
       const currentEngine = scoreEngine(game);
-      const state = currentEngine.playState();
-      expect(state.code).toBe(4000);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.USER_WIN);
+    });
+    it("should return the state of the play when the user is busted", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: ["S-K", "D-Q", "H-J"],
+          score: [30],
+          state: "busted",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.DEALER_WIN);
+    });
+    it("should return the state of the play when the user and dealer stand and user's score is higher", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: ["S-K", "D-Q"],
+          score: [20],
+          state: "stand",
+        },
+        dealer: {
+          cards: ["S-J", "D-4", "H-5"],
+          score: [19],
+          state: "stand",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.USER_WIN);
+    });
+    it("should return the state of the play when the user and dealer stand and user's score is lower", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: ["S-K", "D-8"],
+          score: [18],
+          state: "stand",
+        },
+        dealer: {
+          cards: ["S-J", "D-4", "H-5"],
+          score: [19],
+          state: "stand",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.DEALER_WIN);
+    });
+    it("should return the state of the play when the user and dealer stand and user's score is equal", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: ["S-K", "D-9"],
+          score: [19],
+          state: "stand",
+        },
+        dealer: {
+          cards: ["S-J", "D-4", "H-5"],
+          score: [19],
+          state: "stand",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.DRAW);
+    });
+    it("should return the state of the play when the user is playing", () => {
+      const currentEngine = scoreEngine(sampleGame);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.USER_PLAYING);
     });
 
-    it("should return a 3000 if there is a tie", () => {
+    it("should return the state of the play when the user is stand and dealer can play", () => {
       const game: Game = {
-        id: "abc",
-        deck: ["A-2", "A-5", "A-10"],
+        ...sampleGame,
         user: {
-          cards: ["A-1", "S-8"],
-          score: [9, 19],
-          finished: true,
-        },
-        dealer: {
-          cards: ["H-8", "S-8", "A-3"],
-          score: [19],
-          finished: true,
+          cards: ["S-K", "D-Q",],
+          score: [20],
+          state: "stand",
         },
       };
       const currentEngine = scoreEngine(game);
-      const state = currentEngine.playState();
-      expect(state.code).toBe(3000);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.DEALER_PLAYING);
     });
+
   });
 });
+
+
+
+

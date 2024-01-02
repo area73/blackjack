@@ -1,11 +1,25 @@
 <script setup lang="ts">
-import BJControls from '../components/BJControls.vue';
-import BJGameMat from '../components/BJGameMat.vue';
-import BJHand from '../components/BJHand.vue';
-import BJMarquee from '../components/BJMarquee.vue';
-import { useGameStore } from '../stores/game';
+import BJControls from '@/components/BJControls.vue';
+import BJDialog from '@/components/BJDialog.vue';
+import BJGameMat from '@/components/BJGameMat.vue';
+import BJHand from '@/components/BJHand.vue';
+import BJMarquee from '@/components/BJMarquee.vue';
+import BJMessageBoard from '@/components/BJMessageBoard.vue';
+import { useGameStore } from '@/stores/game';
+import { useGlobalStateStore } from '@/stores/globalState';
+import { ref } from 'vue';
+
+const modal = ref<InstanceType<typeof BJDialog>>();
 
 const gameStore = useGameStore();
+const globalStateStoreStore = useGlobalStateStore();
+
+globalStateStoreStore.$subscribe((_mutation, state) => {
+  state.errorCode > 0 ? modal.value?.showModal() : modal.value?.close;
+});
+
+
+
 const { dealerHand, playerHand } = gameStore;
 </script>
 
@@ -18,18 +32,23 @@ const { dealerHand, playerHand } = gameStore;
   <main class="playingCards faceImages">
     <BJGameMat>
       <template #news>
-        <BJMarquee :msg="gameStore.userMessage" />
+        <BJMarquee :msg="gameStore.userMessage.message" />
       </template>
       <template #controls>
         <BJControls />
       </template>
       <template #dealer>
-        <BJHand owner="Dealer" :score="dealerHand.score" :cards="dealerHand.cards" />
+        <BJHand owner="dealer" :score="dealerHand.score" :cards="dealerHand.cards" />
       </template>
       <template #player>
-        <BJHand owner="Player" :score="playerHand.score" :cards="playerHand.cards" />
+        <BJHand owner="user" :score="playerHand.score" :cards="playerHand.cards" />
       </template>
     </BJGameMat>
+    <BJDialog ref="modal">
+      <template #content>
+        <BJMessageBoard :code="globalStateStoreStore.errorCode" />
+      </template>
+    </BJDialog>
   </main>
 </template>
 

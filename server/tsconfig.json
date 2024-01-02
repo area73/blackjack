@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
+    "rootDirs": ["./src", "../types"],
     "outDir": "./dist",
-    "lib": ["ES5", "ES6"],
+    "lib": ["ES5", "ES6", "ESNext"],
     "target": "ES2020",
     "module": "ESNext",
     "noImplicitAny": true,
@@ -15,7 +16,7 @@
       "@@/*": ["../types/*"]
     }
   },
-  "include": ["./env.d.ts","./src/**/*"],
+  "include": ["./env.d.ts","./src/**/*", "vitest.config.ts",  "../types/*"],
   "exclude": ["node_modules"],
   "ts-node": {
     "esm": true

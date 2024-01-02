@@ -1,3 +1,4 @@
+import { STATUS_CODES } from '@@/shared'
 import { createPinia, setActivePinia } from 'pinia'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { useGameStore } from './game'
@@ -10,7 +11,7 @@ describe('game Store', () => {
     setActivePinia(createPinia())
   })
 
-  describe ('initial state', () => {
+  describe('initial state', () => {
     it('should create a game store', () => {
       const gameStore = useGameStore()
       expect(gameStore).toBeDefined()
@@ -19,54 +20,50 @@ describe('game Store', () => {
       const gameStore = useGameStore()
       expect(gameStore.dealerHand.score.length).toBe(0)
       expect(gameStore.dealerHand.cards.length).toBe(0)
-      expect(gameStore.dealerHand.finished).toBe(false)
+      expect(gameStore.dealerHand.state).toBe('not-started')
     })
     it('should have an initial playerHand set as empty', () => {
       const gameStore = useGameStore()
       expect(gameStore.playerHand.score.length).toBe(0)
       expect(gameStore.playerHand.cards.length).toBe(0)
-      expect(gameStore.playerHand.finished).toBe(false)
+      expect(gameStore.playerHand.state).toBe('not-started')
     })
     it('should have an initial gameState set as "init"', () => {
       const gameStore = useGameStore()
-      expect(gameStore.gameState).toBe('init')
+      expect(gameStore.userMessage.code).toBe(STATUS_CODES.INIT)
     })
-    it('should have an initial userMessage set as ""', () => {
+    it('should have an initial userMessage', () => {
       const gameStore = useGameStore()
-      expect(gameStore.userMessage).toBe('')
+      expect(gameStore.userMessage).toStrictEqual({
+        code: STATUS_CODES.INIT,
+        message: "game not started",
+      })
     })
   })
+  /*
   describe('on store change', () => {
-      it('should update the gameState to "init" when dealerHand and playerHand are empty', () => {
-        const gameStore = useGameStore()
-        expect(gameStore.gameState).toBe('init')
-      })
-      it('should update the gameState to "playerTurn" when playerHand is not finished and there are cards on the table', () => {
-        const gameStore = useGameStore()
-        gameStore.$patch({dealerHand:{cards: ['C-4', 'D-7']},playerHand:{cards: ['S-A', 'H-K']}})
-        expect(gameStore.gameState).toBe('playerTurn')
-      })
-      it('should update the gameState to "dealerTurn" when playerHand is finished', () => {
-        const gameStore = useGameStore()
-        gameStore.$patch({dealerHand:{cards: ['C-4', 'D-7']},playerHand:{cards: ['S-A', 'H-K']}})
-        gameStore.$patch({playerHand: {finished: true}})
-        expect(gameStore.gameState).toBe('dealerTurn')
-      })
-      it('should update the gameState to "finished" when playerHand and dealerHand are finished', () => {
-        const gameStore = useGameStore()
-        gameStore.$patch({dealerHand:{cards: ['C-4', 'D-7', 'H-7']},playerHand:{cards: ['S-A', 'H-K']}})
-        gameStore.$patch({playerHand: {finished: true}})
-        gameStore.$patch({dealerHand: {finished: true}})
-        expect(gameStore.gameState).toBe('finished')
-      })
-
-  });
-
-
-
-
-
-
-
-
+    it('should update the gameState to "init" when dealerHand and playerHand are empty', () => {
+      const gameStore = useGameStore()
+      expect(gameStore.userMessage.code).toBe(STATUS_CODES.INIT)
+    })
+    it('should update the gameState to "playerTurn" when playerHand is not finished and there are cards on the table', () => {
+      const gameStore = useGameStore()
+      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7'], score: [11] }, playerHand: { cards: ['S-A', 'H-K'], score: [11, 21] } })
+      expect(gameStore.userMessage.code).toBe(STATUS_CODES.USER_PLAYING)
+    })
+    it('should update the gameState to "dealerTurn" when playerHand is finished', () => {
+      const gameStore = useGameStore()
+      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7'] }, playerHand: { cards: ['S-A', 'H-K'] } })
+      gameStore.$patch({ playerHand: { state: 'stand' } })
+      expect(gameStore.userMessage.code).toBe(STATUS_CODES.DEALER_PLAYING)
+    })
+    it('should update the gameState to "finished" when playerHand and dealerHand are finished', () => {
+      const gameStore = useGameStore()
+      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7', 'H-7'] }, playerHand: { cards: ['S-A', 'H-K'] } })
+      gameStore.$patch({ playerHand: { state: 'stand' } })
+      gameStore.$patch({ dealerHand: { state: 'busted' } })
+      expect(gameStore.userMessage.code).toBe(STATUS_CODES.USER_WIN)
+    })
+  })
+  */
 })

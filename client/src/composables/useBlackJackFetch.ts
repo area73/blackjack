@@ -1,6 +1,5 @@
-import { literals } from '@/lang/literals'
 import { useGameStore } from '@/stores/game'
-import { BASE_URL_API, ERROR_MESSAGES } from '@/utils/const'
+import { BASE_URL_API } from '@/utils/const'
 import type { APIResponse } from '@@/shared'
 import { createFetch, type AfterFetchContext, type OnFetchErrorContext } from '@vueuse/core'
 
@@ -26,20 +25,22 @@ export type CustomError = {
 }
 
 type ReqResponse = {
-  data: APIResponse
+  data: APIResponse | null
   response: Response | null
-  error: any
+  error: {
+    message: string
+    stack?: string
+  }
 }
 
 const onFetchError = (ctx: ReqResponse): Partial<OnFetchErrorContext<ReqResponse, CustomError>> => {
   const statusCode = ctx.response?.status
-    ? ctx.response.status as keyof typeof ERROR_MESSAGES
+    ? ctx.response.status
     : 1;
   const customError: CustomError = {
     code: statusCode,
-    message: ERROR_MESSAGES[statusCode] || literals.en.error.unknownError,
+    message: ctx.error.message,
   };
-
   return { error: customError };
 }
 

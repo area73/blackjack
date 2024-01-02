@@ -16,11 +16,11 @@ describe(" game", () => {
       });
       expect(game.id).toBe("test");
       expect(game.deck).toEqual(["a", "b", "c"]);
-      expect(game.user).toEqual({ cards: [], score: [0], finished: false });
+      expect(game.user).toEqual({ cards: [], score: [0], state: 'not-started' });
       expect(game.dealer).toEqual({
         cards: [],
         score: [0],
-        finished: false,
+        state: 'not-started',
       });
     });
   });

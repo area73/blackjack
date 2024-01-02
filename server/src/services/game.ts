@@ -21,8 +21,8 @@ export const createGame = async ({
   games.push({
     id: token,
     deck,
-    user: { cards: [], score: [0], finished: false },
-    dealer: { cards: [], score: [0], finished: false },
+    user: { cards: [], score: [0], state: 'not-started' },
+    dealer: { cards: [], score: [0], state: 'not-started' },
   });
   // if we want to persist data in file system we need to save it or else will be persisted only in memory
   // await db.write();

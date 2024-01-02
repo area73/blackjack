@@ -21,11 +21,11 @@ describe("new-game endpoint", () => {
     expect(numOfCards).toBe(2);
   });
 
-  it("should return a json file containing a game with 2 card on dealer's hand", async () => {
+  it("should return a json file containing a game with 1 card on dealer's hand", async () => {
     const response = await req.get("/new-game");
     expect("Content-Type", "json");
     const numOfCards = response.body.game.dealer.cards.length;
-    expect(numOfCards).toBe(2);
+    expect(numOfCards).toBe(1);
   });
 
   it("should return a json file containing a game with user's core", async () => {
