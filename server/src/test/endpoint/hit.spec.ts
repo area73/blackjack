@@ -14,7 +14,7 @@ describe("hit endpoint", () => {
       const initialResponse = await req.get("/new-game");
       token = initialResponse.body.token;
     });
-    it.only("should return a json file containing a game with the new card", async () => {
+    it("should return a json file containing a game with the new card", async () => {
       const response = await req.get("/hit").set("Authorization", token);
       expect(response.body).toHaveProperty("game");
       const game = response.body.game as Game;
