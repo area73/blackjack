@@ -8,18 +8,12 @@ function fetchSpyHeaders(idx = 0) {
 }
 
 let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
-let onFetchErrorSpy = vi.fn()
-let onFetchResponseSpy = vi.fn()
-let onFetchFinallySpy = vi.fn()
+
 
 describe('onFetchError', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     fetchSpy = vi.spyOn(window, 'fetch')
-    onFetchErrorSpy = vi.fn()
-    onFetchResponseSpy = vi.fn()
-    onFetchFinallySpy = vi.fn()
-
   })
   it('should return custom error with status code from response', async () => {
     const { error, execute } = useBlackJackFetch('http://test', {
