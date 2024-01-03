@@ -5,7 +5,7 @@ import { scoreEngine } from "../services/scoreEngine";
 
 export const hit: Middleware = async (ctx, _next) => {
   try {
-    const game = await getGame(String(ctx.headers.authorization));
+    const game = getGame(String(ctx.headers.authorization));
     const gameScore = scoreEngine(game);
     gameScore.hit();
     const apiResponse: APIResponse = { game: gameScore.getAPIGame(), message: gameScore.getPlayState(), token: game.id }

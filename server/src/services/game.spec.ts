@@ -9,8 +9,8 @@ describe(" game", () => {
      * Because we are not accessing an external system our database has no side effect
      * and that way we can test the whole flow
      */
-    it("should create a new game", async () => {
-      const game = await createGame({
+    it("should create a new game", () => {
+      const game = createGame({
         token: "test",
         deck: ["a", "b", "c"],
       });
@@ -25,18 +25,20 @@ describe(" game", () => {
     });
   });
   describe("getGame", () => {
-    it("should return a game", async () => {
-      const game = await createGame({
+    it("should return a game", () => {
+      const game = createGame({
         token: "test",
         deck: ["a", "b", "c"],
       });
-      const gameFound = await getGame("test");
+      const gameFound = getGame("test");
       expect(gameFound).toEqual(game);
     });
-    it("should throw an error if game is not found", async () => {
-      await expect(getGame("other token")).rejects.toThrowError(
-        literals.en.error.gameNotFound
-      );
+    it("should throw an error if game is not found", () => {
+      try {
+        getGame("other token");
+      } catch (error) {
+        expect(error.message).toBe(literals.en.error.gameNotFound);
+      }
     });
   });
 });
