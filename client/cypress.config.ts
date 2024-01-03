@@ -16,12 +16,15 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       getCompareSnapshotsPlugin(on, config);
       on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'chromium' && browser.name !== 'electron') {
-          launchOptions.args.push('--force-color-profile=srgb')
-          launchOptions.args.push('--font-render-hinting=none')
-          launchOptions.args.push('--window-size=1920,1080')
-          launchOptions.args.push('--force-device-scale-factor=1')
-        }
+        console.log(
+          'launching browser %s is headless? %s',
+          browser.name,
+          browser.isHeadless,
+        )
+        launchOptions.args.push('--force-color-profile=srgb')
+        launchOptions.args.push('--font-render-hinting=none')
+        launchOptions.args.push('--window-size=1920,1080')
+        launchOptions.args.push('--force-device-scale-factor=1')
       })
     },
   },
@@ -34,12 +37,10 @@ export default defineConfig({
     setupNodeEvents(on, config) {
       getCompareSnapshotsPlugin(on, config);
       on('before:browser:launch', (browser, launchOptions) => {
-        if (browser.family === 'chromium' && browser.name !== 'electron') {
-          launchOptions.args.push('--force-color-profile=srgb')
-          launchOptions.args.push('--font-render-hinting=none')
-          launchOptions.args.push('--window-size=1920,1080')
-          launchOptions.args.push('--force-device-scale-factor=1')
-        }
+        launchOptions.args.push('--force-color-profile=srgb')
+        launchOptions.args.push('--font-render-hinting=none')
+        launchOptions.args.push('--window-size=1920,1080')
+        launchOptions.args.push('--force-device-scale-factor=1')
       })
     },
   }

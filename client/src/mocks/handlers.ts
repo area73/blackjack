@@ -22,8 +22,11 @@ const incrementLetter = (codeWithLetter: string) => {
 export const handlers: HttpHandler[] = [
   http.get('http://localhost:3000/new-game', () => {
     const searchParams = new URLSearchParams(window.location.search);
-    const flow = searchParams.get('flow') || 'none';
-    console.log('Mocking flow: ', flow);
+    const flow = searchParams.get('flow') || 'newGame';
+    const error = searchParams.get('error');
+    if (error) {
+      return error === 'genericError' ? HttpResponse.error() : HttpResponse.json({}, { status: parseInt(error) })
+    }
     // @ts-expect-error
     return HttpResponse.json(mockedNewGameResponses[flow])
   }),

@@ -18,7 +18,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .bj-game-mat {
   display: grid;
   grid-template-rows: 100px 1fr 1fr 100px;

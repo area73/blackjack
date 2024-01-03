@@ -43,6 +43,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.enabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.enabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.disabled')
+      cy.compareSnapshot("new game started")
     })
   })
   describe('When user\'s turn', () => {
@@ -62,6 +63,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.enabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.enabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.disabled')
+      cy.compareSnapshot("user turn")
     })
     it('adds a card to user hand and user gets busted', () => {
       cy.visit('/?flow=newGame')
@@ -80,6 +82,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.disabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.disabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.enabled')
+      cy.compareSnapshot("user busted")
     })
     it('user stand, dealer plays got busted and user wins', () => {
       cy.visit('/?flow=newGame')
@@ -97,6 +100,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.disabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.disabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.enabled')
+      cy.compareSnapshot("dealer busted user wins")
     })
     it('user stand, dealer play and wins', () => {
       cy.visit('/?flow=newGameDealer')
@@ -129,6 +133,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.enabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.enabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.disabled')
+      cy.compareSnapshot("user split aces")
     })
     it('user got an Ace, hit and bust one value', () => {
       cy.visit('/?flow=newGameAces')
@@ -160,7 +165,37 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.disabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.disabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.enabled')
+      cy.compareSnapshot("user black jack")
     })
   })
-
+  describe('When error flow', () => {
+    it('shows a dialog for an unknown error (generic)', () => {
+      cy.visit('/?error=genericError')
+      cy.findByRole('button', { name: 'New Game' }).click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000) // wait for animation to be finished
+      cy.compareSnapshot("generic error")
+    })
+    it('shows a dialog for a not authorize poeration, probably cheating', () => {
+      cy.visit('/?error=401')
+      cy.findByRole('button', { name: 'New Game' }).click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000) // wait for animation to be finished
+      cy.compareSnapshot("401")
+    })
+    it('shows a dialog for a server error', () => {
+      cy.visit('/?error=500')
+      cy.findByRole('button', { name: 'New Game' }).click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000) // wait for animation to be finished
+      cy.compareSnapshot("500")
+    })
+    it('shows a dialog for a resource not found', () => {
+      cy.visit('/?error=404')
+      cy.findByRole('button', { name: 'New Game' }).click()
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(1000) // wait for animation to be finished
+      cy.compareSnapshot("404")
+    })
+  })
 })
