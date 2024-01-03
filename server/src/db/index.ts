@@ -3,6 +3,7 @@ import { JSONPreset } from "lowdb/node";
 
 import { type Game } from "@@/shared";
 import { join } from "path";
+import { literals } from "../lang";
 
 
 export type Schema = {
@@ -20,11 +21,10 @@ const getDB = async (): Promise<Low<Schema>> => {
     return db
   } catch (error) {
     console.error(error);
-    // throw new Error(literals.en.error.dbInit);
-    throw new Error("error");
+    throw new Error(literals.en.error.dbInit);
   }
 }
-const dbOut = getDB()
+const dbOut = await getDB()
 
-export const getConnection = async (): Promise<Low<Schema>> => await dbOut;
+export const getConnection = (): Low<Schema> => dbOut;
 
