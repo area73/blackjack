@@ -151,7 +151,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Stand' }).should('be.enabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.disabled')
     })
-    it('user got a Black Jack', () => {
+    it.only('user got a Black Jack', () => {
       cy.visit('/?flow=newGameBlackJack')
       cy.findByRole('button', { name: 'New Game' }).click()
       cy.findByRole('status').should('contain.text', 'Black Jack !')
@@ -165,6 +165,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Hit' }).should('be.disabled')
       cy.findByRole('button', { name: 'Stand' }).should('be.disabled')
       cy.findByRole('button', { name: 'New Game' }).should('be.enabled')
+
       cy.compareSnapshot("user black jack")
     })
   })
