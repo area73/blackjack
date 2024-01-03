@@ -21,7 +21,7 @@
 <style lang="scss">
 .bj-game-mat {
   display: grid;
-  grid-template-rows: 100px 1fr 1fr 100px;
+  grid-template-rows: 125px 1fr auto 100px;
   height: 100%;
 
   &__news {
