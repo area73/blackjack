@@ -14,7 +14,7 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   // get a deck and shuffle
   const deck = shuffleDeck(DECK);
   // generate a new game
-  const game = await createGame({ token, deck });
+  const game = createGame({ token, deck });
   const gameScore = scoreEngine(game);
   gameScore.initGame();
   // For security we will remove the deck from the response
