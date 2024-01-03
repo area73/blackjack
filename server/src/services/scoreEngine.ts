@@ -222,7 +222,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
         message: literals.en.game.dealerTurn,
       };
     }
-    // this is not to be expected
+    // this is not to be expected to happen
     return {
       code: STATUS_CODES.INIT,
       message: literals.en.game.newGame,

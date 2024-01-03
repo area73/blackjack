@@ -25,7 +25,6 @@ describe('onFetchError', () => {
 
 
   it('should return custom error with status code from response', async () => {
-
     const { error, execute } = useBlackJackFetch('http://www.google.com', {
       immediate: false
     }).json<APIResponse>()
