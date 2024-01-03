@@ -20,6 +20,7 @@ describe('Game Flows', () => {
       cy.findByRole('button', { name: 'Stand' }).should('be.disabled')
       cy.findByRole('button', { name: 'New Game' }).should('exist')
       cy.findByRole('button', { name: 'New Game' }).should('be.enabled')
+      cy.compareSnapshot("initial view")
     })
   })
   describe('When New game started', () => {
