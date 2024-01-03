@@ -60,6 +60,7 @@ export const STATUS_CODES = {
   DEALER_PLAYING: 4100,
   DRAW: 3000,
   ONGOING: 1000,
+  BLACK_JACK: 9999,
   INIT: 0,
 } as const;
 

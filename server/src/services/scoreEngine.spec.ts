@@ -329,7 +329,6 @@ describe("scoreEngine", () => {
       const playState = currentEngine.getPlayState();
       expect(playState.code).toBe(STATUS_CODES.USER_PLAYING);
     });
-
     it("should return the state of the play when the user is stand and dealer can play", () => {
       const game: Game = {
         ...sampleGame,
@@ -343,7 +342,34 @@ describe("scoreEngine", () => {
       const playState = currentEngine.getPlayState();
       expect(playState.code).toBe(STATUS_CODES.DEALER_PLAYING);
     });
-
+    it("should return the state of Black Jack and user wins", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: ["S-K", "D-A",],
+          score: [11, 21],
+          state: "stand",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.BLACK_JACK);
+      expect(playState.message).toBe(literals.en.game.userWin);
+    });
+    it("should return the state of Black Jack and dealer wins", () => {
+      const game: Game = {
+        ...sampleGame,
+        dealer: {
+          cards: ["S-K", "D-A",],
+          score: [11, 21],
+          state: "stand",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.BLACK_JACK);
+      expect(playState.message).toBe(literals.en.game.dealerWin);
+    });
   });
 });
 

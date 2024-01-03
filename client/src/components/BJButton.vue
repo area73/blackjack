@@ -37,6 +37,7 @@ defineProps<BJButtonProps>()
   }
 
   &:disabled {
+    box-shadow: none;
     border: 1px solid hsl(139, 28%, 30%);
     background-color: hsl(139, 28%, 50%);
     color: hsl(143, 30%, 73%);

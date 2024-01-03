@@ -7,11 +7,14 @@
   "license": "ISC",
   "scripts": {
     "dev": "vite",
+    "dev:msw": "VITE_MSW=true vite",
     "build": "run-p type-check \"build-only {@}\" --",
-    "preview": "vite preview",
+    "preview": "VITE_MSW=true vite preview",
     "test:unit": "vitest",
-    "test:e2e": "start-server-and-test preview http://localhost:4173 'cypress run --e2e'",
-    "test:e2e:dev": "start-server-and-test 'vite dev --port 4173' http://localhost:4173 'cypress open --e2e'",
+    "test:e2e": "start-server-and-test 'VITE_MSW=true  vite dev --port 4173' http://localhost:4173 'cypress run --e2e --browser chrome --env ALLOW_VISUAL_REGRESSION_TO_FAIL=true'",
+    "test:e2e:ci": "start-server-and-test 'VITE_MSW=true  vite dev --port 4173' http://localhost:4173 'cypress run --e2e --browser chrome --env ALLOW_VISUAL_REGRESSION_TO_FAIL=true'",
+    "test:e2e:dev": "start-server-and-test 'VITE_MSW=true  vite dev --port 4173' http://localhost:4173 'cypress open --e2e --browser chrome'",
+    "test:e2e:visual-regenerate": "start-server-and-test 'VITE_MSW=true vite dev --port 4173' http://localhost:4173 'cypress open --e2e --browser chrome --env type=base'",
     "test:components": "cypress run --component --browser chrome",
     "test:components:ci": "cypress run --component --browser chrome --env ALLOW_VISUAL_REGRESSION_TO_FAIL=true",
     "test:components:dev": "cypress open --component --browser chrome",
@@ -46,6 +49,7 @@
     "eslint-plugin-cypress": "^2.15.1",
     "eslint-plugin-vue": "^9.17.0",
     "jsdom": "^23.0.1",
+    "msw": "^2.0.11",
     "npm-run-all2": "^6.1.1",
     "prettier": "^3.0.3",
     "sass": "^1.69.5",
@@ -55,5 +59,8 @@
     "vite": "^5.0.10",
     "vitest": "^1.0.4",
     "vue-tsc": "^1.8.25"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

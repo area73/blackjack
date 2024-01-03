@@ -26,7 +26,7 @@ export const literals = {
       finished: "Game finished",
       userWin: "You win",
       userBust: "You bust",
-      dealerWin: "Dealer win",
+      dealerWin: "Dealer wins",
       dealerBust: "Dealer bust",
       draw: "Draw",
       dealerTurn: "Dealer turn",
