@@ -9,14 +9,14 @@ export type CreateGameParams = {
 /**
  *
  * @param {CreateGameParams}
- * @returns {Promise<Game>}
+ * @returns {Game}
  * Giving a token with a deck of cards, this function will create a new game
  */
-export const createGame = async ({
+export const createGame = ({
   token,
   deck,
-}: CreateGameParams): Promise<Game> => {
-  const db = await getConnection();
+}: CreateGameParams): Game => {
+  const db = getConnection();
   const { games } = db.data;
   games.push({
     id: token,
@@ -33,8 +33,8 @@ export const createGame = async ({
   return game;
 };
 
-export const getGame = async (token: string): Promise<Game> => {
-  const db = await getConnection();
+export const getGame = (token: string): Game => {
+  const db = getConnection();
   const { games } = db.data;
   const game = games.find((game) => game.id === token);
   if (game == null) {
