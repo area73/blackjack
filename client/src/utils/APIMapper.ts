@@ -20,20 +20,10 @@ const fromAPI = (apiResponse: APIResponse): GameStore => {
     userMessage: apiResponse.message,
   } as GameStore
 }
-const toAPI = (frontResponse: GameStore): APIResponse => {
-  return {
-    game: {
-      dealer: frontResponse.dealerHand,
-      user: frontResponse.playerHand,
-      id: frontResponse.token,
-    },
-    token: frontResponse.token,
-    message: frontResponse.userMessage,
-  }
-}
 
 
-export const APIMapper = { fromAPI, toAPI }
+
+export const APIMapper = { fromAPI }
 
 
 
