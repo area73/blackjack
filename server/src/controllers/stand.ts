@@ -8,7 +8,7 @@ export const stand: Middleware = async (ctx, _next) => {
     const game = await getGame(String(ctx.headers.authorization));
     const gameScore = scoreEngine(game);
     gameScore.stand();
-    const apiResponse: APIResponse = { game, message: gameScore.getPlayState(), token: game.id }
+    const apiResponse: APIResponse = { game: gameScore.getAPIGame(), message: gameScore.getPlayState(), token: game.id }
     console.log(`${JSON.stringify(apiResponse)}`.yellow)
     ctx.body = apiResponse;
   } catch (error) {

@@ -16,10 +16,9 @@ export const getNewGame: Middleware = async (ctx, _next) => {
   // generate a new game
   const game = await createGame({ token, deck });
   const gameScore = scoreEngine(game);
-  const play = gameScore.initGame();
+  gameScore.initGame();
   // For security we will remove the deck from the response
-  const initialPlay = { ...play, deck: undefined };
-  const apiResponse: APIResponse = { message: gameScore.getPlayState(), game: initialPlay, token };
+  const apiResponse: APIResponse = { message: gameScore.getPlayState(), game: gameScore.getAPIGame(), token };
   // only for debugging purposes
   console.log(`${JSON.stringify(apiResponse)}`.yellow)
   ctx.body = apiResponse;

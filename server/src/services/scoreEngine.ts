@@ -8,6 +8,7 @@ const DEALER_MIN_SCORE = 17;
 
 export type ScoreEngine = {
   game: Game;
+  getAPIGame: () => Omit<Game, 'deck'>;
   stand: () => boolean;
   hit: () => string | null;
   initGame: () => Game;
@@ -151,7 +152,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
    * This function will return the state of the game
    * @returns {PlayState} the state of the game
    */
-  const getPlayState = (): PlayState | undefined => {
+  const getPlayState = (): PlayState => {
     if (game.user.cards.length === 2 && game.user.score[1] === 21) {
       return {
         code: STATUS_CODES.BLACK_JACK,
@@ -221,9 +222,19 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
         message: literals.en.game.dealerTurn,
       };
     }
+    // this is not to be expected
+    return {
+      code: STATUS_CODES.INIT,
+      message: literals.en.game.newGame,
+    };
+  };
+
+  const getAPIGame = (): Omit<Game, 'deck'> => {
+    return { ...game, deck: undefined } as unknown as Omit<Game, 'deck'>;
   };
 
   return {
+    getAPIGame,
     game,
     stand,
     hit,
