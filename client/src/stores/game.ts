@@ -17,8 +17,6 @@ export const useGameStore = defineStore('game', () => {
     state: 'not-started',
   })
 
-
-
   const $reset = () => {
     token.value = '';
     userMessage.value = { code: 0, message: 'game not started' };

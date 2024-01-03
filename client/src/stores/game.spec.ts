@@ -11,59 +11,62 @@ describe('game Store', () => {
     setActivePinia(createPinia())
   })
 
-  describe('initial state', () => {
-    it('should create a game store', () => {
-      const gameStore = useGameStore()
-      expect(gameStore).toBeDefined()
-    })
-    it('should have an initial dealerHand set as empty', () => {
-      const gameStore = useGameStore()
-      expect(gameStore.dealerHand.score.length).toBe(0)
-      expect(gameStore.dealerHand.cards.length).toBe(0)
-      expect(gameStore.dealerHand.state).toBe('not-started')
-    })
-    it('should have an initial playerHand set as empty', () => {
-      const gameStore = useGameStore()
-      expect(gameStore.playerHand.score.length).toBe(0)
-      expect(gameStore.playerHand.cards.length).toBe(0)
-      expect(gameStore.playerHand.state).toBe('not-started')
-    })
-    it('should have an initial gameState set as "init"', () => {
-      const gameStore = useGameStore()
-      expect(gameStore.userMessage.code).toBe(STATUS_CODES.INIT)
-    })
-    it('should have an initial userMessage', () => {
-      const gameStore = useGameStore()
-      expect(gameStore.userMessage).toStrictEqual({
-        code: STATUS_CODES.INIT,
-        message: "game not started",
-      })
+  it('should create a game store', () => {
+    const gameStore = useGameStore()
+    expect(gameStore).toBeDefined()
+  })
+  it('should have an initial dealerHand set as empty', () => {
+    const gameStore = useGameStore()
+    expect(gameStore.dealerHand.score.length).toBe(0)
+    expect(gameStore.dealerHand.cards.length).toBe(0)
+    expect(gameStore.dealerHand.state).toBe('not-started')
+  })
+  it('should have an initial playerHand set as empty', () => {
+    const gameStore = useGameStore()
+    expect(gameStore.playerHand.score.length).toBe(0)
+    expect(gameStore.playerHand.cards.length).toBe(0)
+    expect(gameStore.playerHand.state).toBe('not-started')
+  })
+  it('should have an initial gameState set as "init"', () => {
+    const gameStore = useGameStore()
+    expect(gameStore.userMessage.code).toBe(STATUS_CODES.INIT)
+  })
+  it('should have an initial userMessage', () => {
+    const gameStore = useGameStore()
+    expect(gameStore.userMessage).toStrictEqual({
+      code: STATUS_CODES.INIT,
+      message: "game not started",
     })
   })
-  /*
-  describe('on store change', () => {
-    it('should update the gameState to "init" when dealerHand and playerHand are empty', () => {
-      const gameStore = useGameStore()
-      expect(gameStore.userMessage.code).toBe(STATUS_CODES.INIT)
+  it('should reset state', () => {
+    const gameStore = useGameStore()
+    gameStore.$patch((state) => {
+      state.token = '1234'
+      state.dealerHand = {
+        cards: ['D-A', 'D-2'],
+        score: [3, 13],
+        state: 'not-started',
+      },
+        state.playerHand = {
+          cards: ['D-7', 'D-10'],
+          score: [17],
+          state: 'playing',
+        },
+        state.userMessage = { code: 1000, message: 'player turn patched' };
     })
-    it('should update the gameState to "playerTurn" when playerHand is not finished and there are cards on the table', () => {
-      const gameStore = useGameStore()
-      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7'], score: [11] }, playerHand: { cards: ['S-A', 'H-K'], score: [11, 21] } })
-      expect(gameStore.userMessage.code).toBe(STATUS_CODES.USER_PLAYING)
+    expect(gameStore.userMessage).toStrictEqual({
+      code: 1000,
+      message: "player turn patched",
     })
-    it('should update the gameState to "dealerTurn" when playerHand is finished', () => {
-      const gameStore = useGameStore()
-      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7'] }, playerHand: { cards: ['S-A', 'H-K'] } })
-      gameStore.$patch({ playerHand: { state: 'stand' } })
-      expect(gameStore.userMessage.code).toBe(STATUS_CODES.DEALER_PLAYING)
+
+    gameStore.$reset()
+
+    expect(gameStore.userMessage).toStrictEqual({
+      code: STATUS_CODES.INIT,
+      message: "game not started",
     })
-    it('should update the gameState to "finished" when playerHand and dealerHand are finished', () => {
-      const gameStore = useGameStore()
-      gameStore.$patch({ dealerHand: { cards: ['C-4', 'D-7', 'H-7'] }, playerHand: { cards: ['S-A', 'H-K'] } })
-      gameStore.$patch({ playerHand: { state: 'stand' } })
-      gameStore.$patch({ dealerHand: { state: 'busted' } })
-      expect(gameStore.userMessage.code).toBe(STATUS_CODES.USER_WIN)
-    })
+    expect(gameStore.dealerHand.cards.length).toBe(0)
+    expect(gameStore.playerHand.cards.length).toBe(0)
+    expect(gameStore.token).toBe('')
   })
-  */
 })

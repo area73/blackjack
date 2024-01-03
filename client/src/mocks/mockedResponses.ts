@@ -40,7 +40,7 @@ export const mockedNewGameResponses = {
   newGame: mock({ token: '01a', message: { code: 2100, message: "Your turn" } }),
   newGameDealer: mock({ token: '02a' }),
   newGameAces: mock({ token: '03a', user: { cards: ["H-A", "D-5"], score: [6, 16] } }),
-  newGameBlackJack: mock({ token: '04a', user: { cards: ["H-A", "D-J"], score: [21] }, message: { code: 2000, message: "Black Jack !" } }),
+  newGameBlackJack: mock({ token: '04a', user: { cards: ["H-A", "D-J"], score: [21] }, message: { code: 9999, message: "Black Jack !" } }),
 }
 
 export const mockedHitResponses = {

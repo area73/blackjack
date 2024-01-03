@@ -233,6 +233,26 @@ describe("scoreEngine", () => {
     });
   });
   describe("get state of the play", () => {
+    it("should return the state of the play when not started", () => {
+      const game: Game = {
+        ...sampleGame,
+        user: {
+          cards: [],
+          score: [0],
+          state: "not-started",
+        },
+        dealer: {
+          cards: [],
+          score: [0],
+          state: "not-started",
+        },
+      };
+      const currentEngine = scoreEngine(game);
+      const playState = currentEngine.getPlayState();
+      expect(playState.code).toBe(STATUS_CODES.INIT);
+    });
+
+
     it("should return the state of the play", () => {
       const currentEngine = scoreEngine(sampleGame);
       const playState = currentEngine.getPlayState();

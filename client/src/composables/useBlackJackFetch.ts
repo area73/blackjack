@@ -1,11 +1,11 @@
 import { useGameStore } from '@/stores/game'
 import { BASE_URL_API } from '@/utils/const'
 import type { APIResponse } from '@@/shared'
-import { createFetch, type AfterFetchContext, type OnFetchErrorContext } from '@vueuse/core'
+import { createFetch, type OnFetchErrorContext } from '@vueuse/core'
 
 const beforeFetch = ({ options }: { options: RequestInit }) => {
   const { token } = useGameStore()
-  const accessToken = token
+  const accessToken = token || '123'
   if (accessToken) {
     options.headers = {
       ...options.headers,
@@ -15,9 +15,6 @@ const beforeFetch = ({ options }: { options: RequestInit }) => {
   return { options }
 }
 
-const afterFetch = (ctx: AfterFetchContext) => {
-  return ctx
-}
 
 export type CustomError = {
   code: number
@@ -49,7 +46,6 @@ export const useBlackJackFetch = createFetch({
   baseUrl: BASE_URL_API,
   options: {
     beforeFetch,
-    afterFetch,
     onFetchError
   },
   fetchOptions: {
