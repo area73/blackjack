@@ -151,7 +151,7 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
    * This function will return the state of the game
    * @returns {PlayState} the state of the game
    */
-  const getPlayState = (): PlayState => {
+  const getPlayState = (): PlayState | undefined => {
     if (game.user.cards.length === 2 && game.user.score[1] === 21) {
       return {
         code: STATUS_CODES.BLACK_JACK,
@@ -221,13 +221,6 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
         message: literals.en.game.dealerTurn,
       };
     }
-
-    return {
-      code: 1000,
-      message: literals.en.game.ongoing,
-    };
-
-
   };
 
   return {
