@@ -28,11 +28,13 @@ const { error, data, execute } = useBlackJackFetch(apiUrl, {
 
 watch(error, (errorState?: CustomError) => {
   if (errorState?.code && errorState?.code !== 200) {
-
     globalStateStoreStore.$patch({
       errorCode: errorState.code,
     })
-
+  } else {
+    globalStateStoreStore.$patch({
+      errorCode: 1,
+    })
   }
 })
 
@@ -47,7 +49,6 @@ watch(data, (dataState) => {
     }
   }
 })
-
 
 const onNewGame = () => {
   gameStore.$reset()

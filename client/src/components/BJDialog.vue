@@ -2,10 +2,7 @@
 import { ref } from 'vue';
 
 const dialog = ref<HTMLDialogElement>();
-
-
 const visible = ref(false);
-
 const showModal = () => {
   dialog.value?.showModal();
   visible.value = true;
@@ -47,10 +44,6 @@ defineExpose({
     backdrop-filter: blur(10px);
   }
 
-  &__form {}
-
-  &__header {}
-
   &__close {
     font-weight: bold;
     font-size: 2rem;
@@ -65,9 +58,6 @@ defineExpose({
     top: 0;
     border: none;
   }
-
-  &__content {}
-
 
   @keyframes fadeIn {
     from {

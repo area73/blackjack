@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { literals } from '@/lang/literals';
 
-
 type BJMessageBoardProps = {
   code: number,
 }
-
 
 defineProps<BJMessageBoardProps>()
 </script>
@@ -39,12 +37,9 @@ defineProps<BJMessageBoardProps>()
     color: #922626;
   }
 
-  &__code-number {}
-
   &__reason {
     font-size: 150%;
     text-align: center;
-
   }
 
   &__hint {

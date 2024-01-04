@@ -9,7 +9,6 @@ function fetchSpyHeaders(idx = 0) {
 
 let fetchSpy = vi.spyOn(window, 'fetch') as MockInstance<any>
 
-
 describe('onFetchError', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
@@ -23,7 +22,6 @@ describe('onFetchError', () => {
     expect(error.value).toEqual({ code: 1, message: 'fetch failed' });
   });
 
-
   it('should return custom error with status code from response', async () => {
     const { error, execute } = useBlackJackFetch('http://www.google.com', {
       immediate: false
@@ -32,17 +30,12 @@ describe('onFetchError', () => {
     expect(error.value).include({ code: 200 });
   })
 
-
-
   it('should chain beforeFetch function ', async () => {
     const { execute } = useBlackJackFetch('http://test', {
       immediate: false
     }).json<APIResponse>()
     await execute()
-
     expect(fetchSpyHeaders()).toMatchObject({ "Authorization": "123", })
-
   })
-
 
 });

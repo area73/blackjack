@@ -10,23 +10,19 @@ import { useGlobalStateStore } from '@/stores/globalState';
 import { ref } from 'vue';
 
 const modal = ref<InstanceType<typeof BJDialog>>();
-
 const gameStore = useGameStore();
 const globalStateStoreStore = useGlobalStateStore();
+const { dealerHand, playerHand } = gameStore;
 
 globalStateStoreStore.$subscribe((_mutation, state) => {
   state.errorCode > 0 ? modal.value?.showModal() : modal.value?.close;
 });
-
-
-
-const { dealerHand, playerHand } = gameStore;
 </script>
 
 <template>
   <header>
     <div class="wrapper">
-      <h1 class="title ">Black Jack</h1>
+      <h1 class="game__title">Black Jack</h1>
     </div>
   </header>
   <main class="playingCards faceImages">
@@ -52,19 +48,21 @@ const { dealerHand, playerHand } = gameStore;
   </main>
 </template>
 
-<style lang="scss" scoped>
-.title {
-  font-size: 6rem;
-  font-family: 'Carattere',
-    sans-serif;
-  margin: 0 0 0 0;
-  padding: 0.3em 0 0 0;
-  text-align: center;
-  line-height: 1;
-  text-shadow: 0px 1px 9px rgba(1, 6, 20, 0.61);
+<style lang="scss">
+.game {
+  &__title {
+    font-size: 6rem;
+    font-family: 'Carattere',
+      sans-serif;
+    margin: 0 0 0 0;
+    padding: 0.3em 0 0 0;
+    text-align: center;
+    line-height: 1;
+    text-shadow: 0px 1px 9px rgba(1, 6, 20, 0.61);
 
-  &::first-letter {
-    font-size: 8rem;
+    &::first-letter {
+      font-size: 8rem;
+    }
   }
 }
 </style>

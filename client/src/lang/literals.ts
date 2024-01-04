@@ -26,5 +26,4 @@ export const literals = {
       }
     }
   },
-
 } as const;

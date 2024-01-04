@@ -7,7 +7,6 @@ type MockParams = {
   token: string;
 }
 
-
 const mock = ({ token, message, user, dealer }: MockParams) => {
   return {
     message: {
@@ -15,7 +14,6 @@ const mock = ({ token, message, user, dealer }: MockParams) => {
       message: "Your turn",
       ...message,
     },
-
     game: {
       id: "l228v17ert",
       user: {
@@ -98,6 +96,7 @@ export const mockedHitResponses = {
     },
   }),
 }
+
 export const mockedStandResponses = {
   '01c': mock({
     message: { code: 2000, message: "You win" },

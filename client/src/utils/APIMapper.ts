@@ -21,8 +21,6 @@ const fromAPI = (apiResponse: APIResponse): GameStore => {
   } as GameStore
 }
 
-
-
 export const APIMapper = { fromAPI }
 
 

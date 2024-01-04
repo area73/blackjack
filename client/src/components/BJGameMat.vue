@@ -35,7 +35,5 @@
   &__player {
     padding-left: 24px;
   }
-
-  &__controls {}
 }
 </style>

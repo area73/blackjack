@@ -11,12 +11,14 @@ describe('game Store', () => {
     const globalStateStore = useGlobalStateStore()
     expect(globalStateStore).toBeDefined()
   })
+
   it('should have controls\' state ', () => {
     const globalStateStore = useGlobalStateStore()
     expect(globalStateStore.controls.hit).toBeDefined()
     expect(globalStateStore.controls.newGame).toBeDefined()
     expect(globalStateStore.controls.stand).toBeDefined()
   })
+
   it('should have error code ', () => {
     const globalStateStore = useGlobalStateStore()
     expect(globalStateStore.errorCode).toBe(0)

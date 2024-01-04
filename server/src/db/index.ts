@@ -5,14 +5,11 @@ import { type Game } from "@@/shared";
 import { join } from "path";
 import { literals } from "../lang";
 
-
 export type Schema = {
   games: Game[];
 };
 
 const defaultSchema: Schema = { games: [] };
-
-// let db: Low<Schema>;
 
 const getDB = async (): Promise<Low<Schema>> => {
   try {
