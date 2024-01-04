@@ -8,7 +8,7 @@ vi.mock('lowdb/node', () => ({
 describe.skip("DB", () => {
   it("should throw an error on connection fail", async () => {
     // Act and Assert
-    // for unknown reason this test is not working
+    // fixme: for unknown reason this test is not working
     // await expect(getConnection()).rejects.toThrowError();
   });
 });

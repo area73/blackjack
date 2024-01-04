@@ -20,18 +20,14 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
   const game = { ...gameParam };
   // Checking if the current user is the player or the dealer
   const actualPlayer = (): Player => game.user.state === "playing" ? "user" : "dealer";
-
   const checkIfBusted = (player: Player): boolean => {
     const playerScore = game[player].score;
     return playerScore.every((score) => score > 21);
   };
-
   const checkIfStand = (player: Player): boolean => game[player].state === "stand";
-
   const notAllowedToHit = (): boolean =>
     actualPlayer() !== "user" &&
     game.dealer.score.every((score) => score >= DEALER_MIN_SCORE);
-
   const getCardFromDeck = (): string => {
     const card = game.deck.shift();
     if (card == null) {
@@ -39,7 +35,6 @@ export const scoreEngine = (gameParam: Game): ScoreEngine => {
     }
     return card;
   };
-
   const addCardToPlayer = (card: string, player?: Player): void => {
     const selectedPlayer = player ?? actualPlayer();
     game[selectedPlayer].cards.push(card);

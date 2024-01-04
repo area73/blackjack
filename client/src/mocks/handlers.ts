@@ -1,3 +1,4 @@
+import { BASE_URL_API } from '@/utils/const';
 import { HttpResponse, http, type HttpHandler } from 'msw';
 import { mockedHitResponses, mockedNewGameResponses, mockedStandResponses } from './mockedResponses';
 
@@ -20,7 +21,7 @@ const incrementLetter = (codeWithLetter: string) => {
 }
 
 export const handlers: HttpHandler[] = [
-  http.get('http://localhost:3000/new-game', () => {
+  http.get(`${BASE_URL_API}/new-game`, () => {
     const searchParams = new URLSearchParams(window.location.search);
     const flow = searchParams.get('flow') || 'newGame';
     const error = searchParams.get('error');
@@ -30,13 +31,13 @@ export const handlers: HttpHandler[] = [
     // @ts-expect-error
     return HttpResponse.json(mockedNewGameResponses[flow])
   }),
-  http.get('http://localhost:3000/hit', ({ request }) => {
+  http.get(`${BASE_URL_API}/hit`, ({ request }) => {
     const previousAuthToken = request.headers.get('Authorization')
     const newTokenFlow = incrementLetter(previousAuthToken!)
     // @ts-expect-error
     return HttpResponse.json(mockedHitResponses[newTokenFlow])
   }),
-  http.get('http://localhost:3000/stand', ({ request }) => {
+  http.get(`${BASE_URL_API}/stand`, ({ request }) => {
     const previousAuthToken = request.headers.get('Authorization')
     const newTokenFlow = incrementLetter(previousAuthToken!)
     // @ts-expect-error

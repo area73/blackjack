@@ -15,7 +15,6 @@ const beforeFetch = ({ options }: { options: RequestInit }) => {
   return { options }
 }
 
-
 export type CustomError = {
   code: number
   message: string
